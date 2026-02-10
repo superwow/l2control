@@ -1,0 +1,104 @@
+html {
+  background: url(./images/cp_bg.jpg) no-repeat center center;
+  background-size: cover;
+  background-color: #000;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: "Comfortaa", sans-serif;
+  color: #fff3cd;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.error,
+.valid {
+  text-align: center;
+  margin: 30px;
+  color: #fff;
+  padding: 5px;
+}
+
+.error {
+  background: #d04747;
+  border: 1px solid #970000;
+}
+
+.valid {
+  background: #6ed047;
+  border: 1px solid #449700;
+}
+
+#footer h5 {
+  font: 10px Verdana;
+  font-weight: 400;
+  text-align: center;
+  margin: 30px;
+  padding: 5px;
+}
+
+ul.menu {
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+ul.menu li {
+  list-style-type: none;
+  display: block;
+  margin: 2px;
+  padding: 2px 2px 2px 10px;
+}
+
+ul.menu a {
+  margin: 0;
+  padding: 2px 10px 2px 2px;
+}
+
+@font-face {
+  font-family: "Comfortaa";
+  font-style: normal;
+  font-weight: 400;
+  src: url(/cf-fonts/v/comfortaa/5.0.18/cyrillic/wght/normal.woff2) format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+  font-display: swap;
+}
+
+/* Additional font-face declarations omitted for brevity */
+
+.main {
+  max-width: 743px;
+  margin: 20px auto;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  text-align: center;
+  padding-top: 5px;
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.form-header h2 {
+  margin-bottom: 5px;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.captcha img {
+  cursor: pointer;
+  height: 37px;
+}
