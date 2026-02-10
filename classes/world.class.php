@@ -16,14 +16,14 @@ class world {
  *			ID of the world selected
  */
 	public function __construct($id) {
-		
+
 		if(!CONFIG::g()->service_allow)
 			exit('Access to this private class have been restricted by the admin');
-		
+
 		if(CONFIG::g()->core_interlude)
 			exit('Accounts Services can\'t be used with interlude server');
-		
-		$this->id = mysql_real_escape_string($id);
+
+		$this->id = (int)$id;
 		$this->set_name();
 		$this->load_chars();
 	}
@@ -65,29 +65,31 @@ class world {
  *		return world list
  */
 	public function load_worlds () {
-		
+
 		DEBUG::add('Getting Worlds list');
-		$sql = 'SELECT `server_id` FROM `gameservers`;';
-		$rslt = MYSQL::g()->query($sql);
-		
+
+		$rows = Database::fetchAll(
+			"SELECT `server_id` FROM `gameservers`"
+		);
+
 		$worlds = array();
-		while ($row = @mysql_fetch_object($rslt)) {
-			$w = (CONFIG::g()->select_game_server($row->server_id));
+		foreach ($rows as $row) {
+			$w = (CONFIG::g()->select_game_server($row['server_id']));
 			if(!empty($w))
-				$worlds[] = new world($row->server_id);
+				$worlds[] = new world($row['server_id']);
 			else
-				DEBUG::add('World n°'.$row->server_id.' had not configuration !');
+				DEBUG::add('World nÂ°'.$row['server_id'].' had not configuration !');
 		}
-		
+
 		return $worlds;
 	}
 
 /**
  *	Get name world by id
  *		return name world
- */	
+ */
 	public function get_name_world ($id) {
-		$id = MYSQL::g()->escape_string($id);
+		$id = (int)$id;
 		$dom = new DOMDocument;
 		$dom->load(CONFIG::g()->service_server_name);
 		return iconv('utf-8',CONFIG::g()->core_iso_type,$dom->getElementsByTagName('server')->item(($id-1))->getAttribute("name"));
@@ -95,22 +97,22 @@ class world {
 
 /**
  * Getting all characters in the world linked with the account gived in parameter
- * 
+ *
  * @param $login : account name
- * 
+ *
  * 		return list of their chars
  */
 	function load_chars() {
 		$this->char_list = array();
-		
-		$sql = sprintf("SELECT `charId`, `char_name` FROM `characters` WHERE `account_name` = '%s';",
-				MYSQL::g()->escape_string(ACCOUNT::load()->getLogin())
-			);
-		
-		$rslt = MYSQL::g($this->id)->query($sql);
-		
-		while ($row = @mysql_fetch_object($rslt)) {
-			$char = new character ($row->charId, $this->id);
+
+		$rows = Database::fetchAll(
+			"SELECT `charId`, `char_name` FROM `characters` WHERE `account_name` = ?",
+			[ACCOUNT::load()->getLogin()],
+			$this->id
+		);
+
+		foreach ($rows as $row) {
+			$char = new character ($row['charId'], $this->id);
 			$this->char_list[] = $char;
 		}
 	}

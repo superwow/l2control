@@ -8,6 +8,7 @@ require './config.php';
 require './libs/Smarty.class.php';
 require './classes/system.class.php';
 require './classes/mysql.class.php';
+require './classes/database.class.php';
 require './classes/smtp.class.php';
 require './classes/email.class.php';
 require './classes/core.class.php';
