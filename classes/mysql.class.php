@@ -57,8 +57,8 @@ class mysql {
 	public function query ($q) {
 		DEBUG::add($this->_db.'->'.$q);
 		LOGDAEMON::add($this->_db.'->'.$q);
-		$rslt = @mysqli_query ($this->db_inst, $q );
-		DEBUG::add('Records: '.@mysqli_affected_rows());
+		$rslt = mysqli_query ($this->db_inst, $q );
+		DEBUG::add('Records: '.mysqli_affected_rows($this->db_inst));
 		return $rslt;
 	}
 
@@ -73,7 +73,7 @@ class mysql {
 		
 		
 		
-		$rslt = $this->mysqli_result(@mysqli_query ($this->db_inst, $q ));
+		$rslt = $this->mysqli_result(mysqli_query ($this->db_inst, $q ));
 //		if ($rslt !== FALSE)
 //			$rslt = $rslt->fetch_all(MYSQLI_ASSOC);
 
@@ -100,11 +100,12 @@ class mysql {
 		return $rslt;
 	}
 	
-    public function mysqli_result($res,$row=0,$col=0){ 
-    $numrows = @mysqli_num_rows($res); 
+    public function mysqli_result($res,$row=0,$col=0){
+    if ($res === false) return false;
+    $numrows = mysqli_num_rows($res);
     if ($numrows && $row <= ($numrows-1) && $row >=0){
-        @mysqli_data_seek($res,$row);
-        $resrow = (is_numeric($col)) ? @mysqli_fetch_row($res) : @mysqli_fetch_assoc($res);
+        mysqli_data_seek($res,$row);
+        $resrow = (is_numeric($col)) ? mysqli_fetch_row($res) : mysqli_fetch_assoc($res);
         if (isset($resrow[$col])){
             return $resrow[$col];
         }

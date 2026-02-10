@@ -54,10 +54,10 @@
 **Цель:** проект запускается на PHP 8.2+, без fatal из-за `mysql_*`.
 
 ### Scope
-- [ ] Заменить `mysql_real_escape_string` на текущий escape через connection (`MYSQL::g()->escape_string`).
-- [ ] Заменить `mysql_fetch_object/mysql_fetch_row` на `mysqli_fetch_object/mysqli_fetch_row`.
-- [ ] Убрать критичные `@` вокруг DB-вызовов в боевом контуре.
-- [ ] Добавить smoke-check script (`php -l` по ключевым файлам).
+- [x] Заменить `mysql_real_escape_string` на текущий escape через connection (`MYSQL::g()->escape_string`).
+- [x] Заменить `mysql_fetch_object/mysql_fetch_row` на `mysqli_fetch_object/mysqli_fetch_row`.
+- [x] Убрать критичные `@` вокруг DB-вызовов в боевом контуре.
+- [x] Добавить smoke-check script (`php -l` по ключевым файлам).
 
 ### Пример патча (unified diff)
 ```diff
@@ -84,16 +84,16 @@
 **Цель:** добавить PDO abstraction без мгновенного удаления старого `MYSQL` класса.
 
 ### Scope
-- [ ] Добавить `classes/database.class.php` (PDO singleton/factory по server-id).
-- [ ] Реализовать методы:
-  - [ ] `query(string $sql, array $params = []): PDOStatement`
-  - [ ] `fetchOne(string $sql, array $params = []): ?array`
-  - [ ] `fetchValue(string $sql, array $params = [], int $column = 0): mixed`
-  - [ ] `execute(string $sql, array $params = []): int`
-- [ ] Конфигурировать:
-  - [ ] `PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION`
-  - [ ] `PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC`
-  - [ ] `PDO::ATTR_EMULATE_PREPARES => false`
+- [x] Добавить `classes/database.class.php` (PDO singleton/factory по server-id).
+- [x] Реализовать методы:
+  - [x] `query(string $sql, array $params = []): PDOStatement`
+  - [x] `fetchOne(string $sql, array $params = []): ?array`
+  - [x] `fetchValue(string $sql, array $params = [], int $column = 0): mixed`
+  - [x] `execute(string $sql, array $params = []): int`
+- [x] Конфигурировать:
+  - [x] `PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION`
+  - [x] `PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC`
+  - [x] `PDO::ATTR_EMULATE_PREPARES => false`
 
 ### Готовый код (скелет)
 ```php
@@ -148,10 +148,10 @@ final class Database
 **Цель:** убрать зависимость от `classes/mysql.class.php` в business-контуре.
 
 ### Scope
-- [ ] `classes/account.class.php` → prepared statements.
-- [ ] `classes/world.class.php` → PDO fetch.
-- [ ] `classes/character.class.php` → PDO fetch + параметризация всех ID/login полей.
-- [ ] Удалить остатки строковой конкатенации SQL с пользовательским вводом.
+- [x] `classes/account.class.php` → prepared statements.
+- [x] `classes/world.class.php` → PDO fetch.
+- [x] `classes/character.class.php` → PDO fetch + параметризация всех ID/login полей.
+- [x] Удалить остатки строковой конкатенации SQL с пользовательским вводом.
 
 ### Что даст по перформансу
 - Стабильное поведение prepared statements.
