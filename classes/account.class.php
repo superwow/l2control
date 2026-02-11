@@ -52,6 +52,16 @@ class account{
 		$this->login = $login;
 	}
 
+	private function getAccessLevelColumn() {
+		$column = (string)CONFIG::g()->accessLevel();
+
+		if (!preg_match('/^[A-Za-z0-9_]+$/', $column)) {
+			throw new RuntimeException('Invalid access level column name configured');
+		}
+
+		return $column;
+	}
+
 	public function create ($login, $pwd, $repwd, $email, $img = null) {
 
 		if(!$this->verif_img($img)) {
@@ -107,7 +117,7 @@ class account{
 		$code = $this->gen_img_cle(10);
 
 		// accessLevel column name comes from config, not user input
-		$accessLevelCol = CONFIG::g()->accessLevel();
+		$accessLevelCol = $this->getAccessLevelColumn();
 
 		DEBUG::add('Create a new user on the accounts table with -1 on accesslevel');
 
@@ -245,7 +255,7 @@ class account{
 		if (!($login = $this->valid_key($key)))
 			return false;
 
-		$accessLevelCol = CONFIG::g()->accessLevel();
+		$accessLevelCol = $this->getAccessLevelColumn();
 
 		DEBUG::add('Update accesslevel to 0');
 
@@ -346,7 +356,7 @@ class account{
 
 		$this->password = $this->l2j_encrypt($this->password);
 
-		$accessLevelCol = CONFIG::g()->accessLevel();
+		$accessLevelCol = $this->getAccessLevelColumn();
 
 		DEBUG::add('Check if login and password match on account table');
 
@@ -384,7 +394,7 @@ class account{
 
 		$account = $this->load();
 
-		$accessLevelCol = CONFIG::g()->accessLevel();
+		$accessLevelCol = $this->getAccessLevelColumn();
 
 		DEBUG::add('Verify if the user is correctly logged');
 
