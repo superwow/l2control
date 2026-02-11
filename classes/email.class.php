@@ -55,8 +55,29 @@ class email{
 		$title = preg_replace($entity_b, $entity_p, $title);
 		$message = preg_replace($entity_b, $entity_p, $message);
 		
-		// 2 ways for sending email by php mail function and by socket (smtp.class.php)
+		if (Mailer::isAvailable()) {
+			$mailer = Mailer::create([
+				'host' => $this->email_smtp_address,
+				'port' => (int)$this->email_smtp_port,
+				'username' => $this->email_smtp_login,
+				'password' => $this->email_smtp_password,
+				'helo' => $this->email_smtp_domain,
+				'charset' => CONFIG::g()->core_iso_type,
+				'use_smtp' => (bool)$this->email_smtp_use,
+			]);
 
+			if (!$mailer->send($this->email, $this->server_name, $this->email_from, $title, $message)) {
+				$lastError = $mailer->getLastError();
+				if (!empty($lastError)) {
+					MSG::add_error($lastError);
+				}
+				return false;
+			}
+
+			return true;
+		}
+		
+		// Legacy fallback when PHPMailer is not vendored yet.
 		if($this->email_smtp_use){
 			$smtp = new SMTP($this->email_smtp_address, $this->email_smtp_login, $this->email_smtp_password, $this->email_smtp_port, $this->email_smtp_domain, 0);
 			$smtp->set_from($this->server_name, $this->email_from);

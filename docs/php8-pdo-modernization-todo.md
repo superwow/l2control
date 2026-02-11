@@ -171,7 +171,7 @@ final class Database
   - [ ] вариант B (правильный путь): Twig + постепенная миграция шаблонов.
 - [ ] Почтовый слой:
   - [ ] убрать legacy SMTP/mail-signature реализацию;
-  - [ ] перейти на `symfony/mailer` или свежий `phpmailer/phpmailer`.
+  - [~] перейти на `symfony/mailer` или свежий `phpmailer/phpmailer` (добавлен runtime-адаптер и fallback без Composer).
 
 **Риски:** высокие для полного шаблонного апдейта; лучше катить поэтапно.
 
