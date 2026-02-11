@@ -37,11 +37,10 @@ class email{
 	
 	private function get_email ()
 	{
-		$sql = sprintf("SELECT `email` FROM `accounts` WHERE `login` = '%s' LIMIT 1;",
-				MYSQL::g()->escape_string($this->login)
-			);
-		
-		return MYSQL::g()->result($sql);
+		return Database::fetchValue(
+			"SELECT `email` FROM `accounts` WHERE `login` = ? LIMIT 1",
+			[$this->login]
+		);
 	}
 
 	private function send_email ($title, $message)
@@ -52,7 +51,7 @@ class email{
 	
 		// Create the content of email
 		$entity_b = array ('[\[IP\]]','[\[ID\]]','[\[EMAIL_SUPPORT\]]','[\[URL\]]','[\[CODE\]]','[\[SERVER\]]');
-		$entity_p = array ($_SERVER['REMOTE_ADDR'], $this->login, $this->email_from, @$this->url, @$this->code, $this->server_name);
+		$entity_p = array ($_SERVER['REMOTE_ADDR'], $this->login, $this->email_from, $this->url ?? null, $this->code ?? null, $this->server_name);
 		$title = preg_replace($entity_b, $entity_p, $title);
 		$message = preg_replace($entity_b, $entity_p, $message);
 		
@@ -70,7 +69,7 @@ class email{
 			}
 		}else{
 			$from  = 'From:'.$this->email_from."\n"."MIME-version: 1.0\n"."Content-type: text/html; charset= ".CONFIG::g()->core_iso_type."\n";
-			if(!@mail($this->email, $title, $message, $from))
+			if(!mail($this->email, $title, $message, $from))
 				return false;
 		}
 

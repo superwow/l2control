@@ -7,6 +7,16 @@ final class Database
     /** @var array<string, PDO> */
     private static array $pool = [];
 
+    /** @var array<string, string> */
+    private static array $charsetMap = [
+        'utf-8' => 'utf8mb4',
+        'utf8' => 'utf8mb4',
+        'utf8mb4' => 'utf8mb4',
+        'cp1251' => 'cp1251',
+        'windows-1251' => 'cp1251',
+        'latin1' => 'latin1',
+    ];
+
     public static function conn(?int $serverId = null): PDO
     {
         $key = $serverId === null ? 'login' : 'game:' . $serverId;
@@ -23,10 +33,12 @@ final class Database
             }
         }
 
+        $charset = self::resolveCharset((string)CONFIG::g()->core_iso_type);
         $dsn = sprintf(
-            'mysql:host=%s;dbname=%s;charset=utf8mb4',
+            'mysql:host=%s;dbname=%s;charset=%s',
             $cfg['hostname'],
-            $cfg['database']
+            $cfg['database'],
+            $charset
         );
 
         $pdo = new PDO($dsn, $cfg['user'], $cfg['password'], [
@@ -75,6 +87,16 @@ final class Database
     public static function reset(): void
     {
         self::$pool = [];
+    }
+
+    private static function resolveCharset(string $charset): string
+    {
+        $normalized = strtolower(trim($charset));
+        if ($normalized === '') {
+            return 'utf8mb4';
+        }
+
+        return self::$charsetMap[$normalized] ?? 'utf8mb4';
     }
 }
 
