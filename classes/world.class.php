@@ -49,7 +49,7 @@ class world {
  *		return nothing
  */
 	private function set_name(){
-		$this->name = $this->get_name_world($this->id);
+		$this->name = self::get_name_world($this->id);
 	}
 
 /**
@@ -64,7 +64,7 @@ class world {
  *	Get worlds list registred into login server
  *		return world list
  */
-	public function load_worlds () {
+	public static function load_worlds () {
 
 		DEBUG::add('Getting Worlds list');
 
@@ -88,7 +88,7 @@ class world {
  *	Get name world by id
  *		return name world
  */
-	public function get_name_world ($id) {
+	public static function get_name_world ($id) {
 		$id = (int)$id;
 		$dom = new DOMDocument;
 		$dom->load(CONFIG::g()->service_server_name);
