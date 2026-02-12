@@ -36,14 +36,17 @@ class SmartyObject extends Smarty {
 		$this->template = $template;
 	}
 	
-	public function assign($m, $p) {
-		parent::assign($m, $p);
+	public function assign($tpl_var, $value = null) {
+		parent::assign($tpl_var, $value);
 	}
 	
-	public function display() {
+	public function display($resource_name = null, $cache_id = null, $compile_id = null) {
 		DEBUG::publish($this);
 		MSG::display($this);
-		parent::display($this->template);
+		if ($resource_name === null) {
+			$resource_name = $this->template;
+		}
+		parent::display($resource_name, $cache_id, $compile_id);
 	}
 }
 
