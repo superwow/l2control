@@ -40,13 +40,13 @@ class SmartyObject extends Smarty {
 		parent::assign($tpl_var, $value, $nocache, $scope);
 	}
 	
-	public function display($resource_name = null, $cache_id = null, $compile_id = null, $parent = null) {
+	public function display($template = null, $cache_id = null, $compile_id = null, $parent = null) {
 		DEBUG::publish($this);
 		MSG::display($this);
-		if ($resource_name === null) {
-			$resource_name = $this->template;
+		if ($template === null) {
+			$template = $this->template;
 		}
-		parent::display($resource_name, $cache_id, $compile_id, $parent);
+		parent::display($template, $cache_id, $compile_id, $parent);
 	}
 }
 
@@ -263,7 +263,7 @@ class lang {
 		}
 	}
 
-	public function i18n($itemName) {
+	public static function i18n($itemName) {
 		$l = LANG::getInstance();
 		return $l->getItemValue($itemName);
 	}
