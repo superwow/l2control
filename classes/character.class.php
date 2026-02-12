@@ -162,23 +162,23 @@ class character {
 	function allow_fix($unstuck = false) {
 
 		if(is_null($this->charId)){
-			MSG::add_error(LANG::i18n('_error_select_char'));
+			MSG::add_error(LANG::getInstance()->i18n('_error_select_char'));
 			return false;
 		}
 
 		if(!$this->allow_with_karma()){
-			MSG::add_error(LANG::i18n('_allow_with_karma'));
+			MSG::add_error(LANG::getInstance()->i18n('_allow_with_karma'));
 			return false;
 		}
 
 		if($unstuck) {
 			if(!CONFIG::g()->service_unstuck) {
-				MSG::add_error(LANG::i18n('_allow_unstuck'));
+				MSG::add_error(LANG::getInstance()->i18n('_allow_unstuck'));
 				return false;
 			}
 		} else {
 			if(!CONFIG::g()->service_fix) {
-				MSG::add_error(LANG::i18n('_allow_fix'));
+				MSG::add_error(LANG::getInstance()->i18n('_allow_fix'));
 				return false;
 			}
 		}
@@ -194,14 +194,14 @@ class character {
 		);
 
 		if($count > '0') {
-			MSG::add_error(sprintf(LANG::i18n('_allow_time'), CONFIG::g()->service_fix_time, $last));
+			MSG::add_error(sprintf(LANG::getInstance()->i18n('_allow_time'), CONFIG::g()->service_fix_time, $last));
 			return false;
 		}
 
 		DEBUG::add('Look if player is online');
 
 		if($this->is_online()) {
-			MSG::add_error(LANG::i18n('_char_online'));
+			MSG::add_error(LANG::getInstance()->i18n('_char_online'));
 			return false;
 		}
 
@@ -304,12 +304,12 @@ class character {
 	function can_change_name ($new_name = null, $test = null) {
 
 		if( !CONFIG::g()->service_name) {	// Check if the admin allow account services
-			MSG::add_error(LANG::i18n('_acc_serv_off'));
+			MSG::add_error(LANG::getInstance()->i18n('_acc_serv_off'));
 			return false;
 		}
 
 		if(is_null($this->charId)){
-			MSG::add_error(LANG::i18n('_error_select_char'));
+			MSG::add_error(LANG::getInstance()->i18n('_error_select_char'));
 			return false;
 		}
 
@@ -320,27 +320,27 @@ class character {
 		);
 
 		if($count > '0') {		// Check if character has already changed him name.
-			MSG::add_error(LANG::i18n('_acc_serv_name_error1'));
+			MSG::add_error(LANG::getInstance()->i18n('_acc_serv_name_error1'));
 			return false;
 		}
 
 		if(is_null($new_name)) {		// Check if the new name is the same than currently
-			MSG::add_error(LANG::i18n('_acc_serv_name_error2'));
+			MSG::add_error(LANG::getInstance()->i18n('_acc_serv_name_error2'));
 			return false;
 		}
 
 		if($new_name == $this->char_name) {		// Check if the new name is the same than currently
-			MSG::add_error(LANG::i18n('_acc_serv_name_error3'));
+			MSG::add_error(LANG::getInstance()->i18n('_acc_serv_name_error3'));
 			return false;
 		}
 
 		if( $this->is_ban() ) {				// Check if the character is banned
-			MSG::add_error(LANG::i18n('_acc_serv_ban'));
+			MSG::add_error(LANG::getInstance()->i18n('_acc_serv_ban'));
 			return false;
 		}
 
 		if (!preg_match(CONFIG::g()->service_name_regex , $new_name)) {				// Check if new name is a valid name
-			MSG::add_error(LANG::i18n('_acc_serv_name_error4'));
+			MSG::add_error(LANG::getInstance()->i18n('_acc_serv_name_error4'));
 			return false;
 		}
 
@@ -351,12 +351,12 @@ class character {
 		);
 
 		if($this->clanid != '0') {		// Check if character is in clan.
-			MSG::add_error(LANG::i18n('_acc_serv_name_error5'));
+			MSG::add_error(LANG::getInstance()->i18n('_acc_serv_name_error5'));
 			return false;
 		}
 
 		if(!$this->is_hero()) {		// Check if character is hero.
-			MSG::add_error(LANG::i18n('_acc_serv_name_error6'));
+			MSG::add_error(LANG::getInstance()->i18n('_acc_serv_name_error6'));
 			return false;
 		}
 
@@ -400,12 +400,12 @@ class character {
 	function can_change_gender ($test = null) {
 
 		if( !CONFIG::g()->service_sex) {	// Check if the admin allow account services
-			MSG::add_error(LANG::i18n('_acc_serv_off'));
+			MSG::add_error(LANG::getInstance()->i18n('_acc_serv_off'));
 			return false;
 		}
 
 		if(is_null($this->charId)){
-			MSG::add_error(LANG::i18n('_error_select_char'));
+			MSG::add_error(LANG::getInstance()->i18n('_error_select_char'));
 			return false;
 		}
 
@@ -416,22 +416,22 @@ class character {
 		);
 
 		if($count > '0') {
-			MSG::add_error(LANG::i18n('_acc_serv_gender_time'));
+			MSG::add_error(LANG::getInstance()->i18n('_acc_serv_gender_time'));
 			return false;
 		}
 
 		if( $this->is_online() ) {				// Check if the character is online
-			MSG::add_error(LANG::i18n('_acc_serv_offline'));
+			MSG::add_error(LANG::getInstance()->i18n('_acc_serv_offline'));
 			return false;
 		}
 
 		if( $this->is_ban() ) {				// Check if the character is banned
-			MSG::add_error(LANG::i18n('_acc_serv_ban'));
+			MSG::add_error(LANG::getInstance()->i18n('_acc_serv_ban'));
 			return false;
 		}
 
 		if( $this->base_class >= 123 && $this->base_class <= 136 ) {          // Check if the character is kamael
-			MSG::add_error(LANG::i18n('_acc_serv_gender_kamael'));
+			MSG::add_error(LANG::getInstance()->i18n('_acc_serv_gender_kamael'));
 			return false;
 		}
 

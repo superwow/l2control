@@ -65,52 +65,52 @@ class account{
 	public function create ($login, $pwd, $repwd, $email, $img = null) {
 
 		if(!$this->verif_img($img)) {
-			MSG::add_error(LANG::i18n('_image_control'));
+			MSG::add_error(LANG::getInstance()->i18n('_image_control'));
 			return false;
 		}
 
 		if($login == '') {
-			MSG::add_error(LANG::i18n('_REGWARN_UNAME1'));
+			MSG::add_error(LANG::getInstance()->i18n('_REGWARN_UNAME1'));
 			return false;
 		}
 
 		if(!$this->verif_char($login, true)) {
-			MSG::add_error(LANG::i18n('_REGWARN_UNAME2'));
+			MSG::add_error(LANG::getInstance()->i18n('_REGWARN_UNAME2'));
 			return false;
 		}
 
 		if(!$this->verif_char($pwd)) {
-			MSG::add_error(LANG::i18n('_REGWARN_VPASS1'));
+			MSG::add_error(LANG::getInstance()->i18n('_REGWARN_VPASS1'));
 			return false;
 		}
 
 		if($login == $pwd) {
-			MSG::add_error(LANG::i18n('_REGWARN_UNAME3'));
+			MSG::add_error(LANG::getInstance()->i18n('_REGWARN_UNAME3'));
 			return false;
 		}
 
 		if($pwd != $repwd) {
-			MSG::add_error(LANG::i18n('_REGWARN_VPASS2'));
+			MSG::add_error(LANG::getInstance()->i18n('_REGWARN_VPASS2'));
 			return false;
 		}
 
 		if(!$this->verif_limit_create()) {
-			MSG::add_error(LANG::i18n('_REGWARN_LIMIT_CREATING'));
+			MSG::add_error(LANG::getInstance()->i18n('_REGWARN_LIMIT_CREATING'));
 			return false;
 		}
 
 		if($this->is_login_exist($login)) {
-			MSG::add_error(LANG::i18n('_REGWARN_INUSE'));
+			MSG::add_error(LANG::getInstance()->i18n('_REGWARN_INUSE'));
 			return false;
 		}
 
 		if(!$this->verif_email($email)) {
-			MSG::add_error(LANG::i18n('_REGWARN_MAIL'));
+			MSG::add_error(LANG::getInstance()->i18n('_REGWARN_MAIL'));
 			return false;
 		}
 
 		if($this->is_email_exist($email)) {
-			MSG::add_error(LANG::i18n('_REGWARN_EMAIL_INUSE'));
+			MSG::add_error(LANG::getInstance()->i18n('_REGWARN_EMAIL_INUSE'));
 			return false;
 		}
 
@@ -127,7 +127,7 @@ class account{
 		);
 
 		if(!$this->is_login_exist($login)) {
-			MSG::add_error(LANG::i18n('_creating_acc_prob'));
+			MSG::add_error(LANG::getInstance()->i18n('_creating_acc_prob'));
 			return false;
 		}
 
@@ -140,9 +140,9 @@ class account{
 
 		if(!CONFIG::g()->core_act_email) {
 			$this->valid_account($code);
-			MSG::add_valid(LANG::i18n('_account_created_act'));
+			MSG::add_valid(LANG::getInstance()->i18n('_account_created_act'));
 		}else{
-			MSG::add_valid(LANG::i18n('_account_created_noact'));
+			MSG::add_valid(LANG::getInstance()->i18n('_account_created_noact'));
 			EMAIL::OP()->operator($login, 'created_account_validation', $code);
 		}
 
@@ -338,7 +338,7 @@ class account{
 	public function auth ($login, $password, $img = null) {
 
 		if(!$this->verif_img($img)) {
-			MSG::add_error(LANG::i18n('_image_control'));
+			MSG::add_error(LANG::getInstance()->i18n('_image_control'));
 			return false;
 		}
 
@@ -387,7 +387,7 @@ class account{
 			return false;
 
 		if($this->ip != $this->PseudoIpv4($_SERVER['REMOTE_ADDR'])){	// Check if user ip is the same than the first time
-			MSG::add_error(LANG::i18n('_logout'));
+			MSG::add_error(LANG::getInstance()->i18n('_logout'));
 			$this->loggout();
 			return false;
 		}
@@ -404,7 +404,7 @@ class account{
 		);
 
 		if($count != 1)	{	// Check if user session data are right
-			MSG::add_error(LANG::i18n('_logout'));
+			MSG::add_error(LANG::getInstance()->i18n('_logout'));
 			$this->loggout();
 			return false;
 		}
@@ -438,7 +438,7 @@ class account{
 	{
 
 		if(!$this->verif_img($img)) {
-			MSG::add_error(LANG::i18n('_image_control'));
+			MSG::add_error(LANG::getInstance()->i18n('_image_control'));
 			return false;
 		}
 
@@ -450,7 +450,7 @@ class account{
 		);
 
 		if($count != 1) {
-			MSG::add_error(LANG::i18n('_wrong_auth'));
+			MSG::add_error(LANG::getInstance()->i18n('_wrong_auth'));
 			return false;
 		}
 
@@ -472,7 +472,7 @@ class account{
 	{
 
 		if(!$this->verif_tag($login, 'forget_pwd', $key)) {
-			MSG::add_error(LANG::i18n('_activation_control'));
+			MSG::add_error(LANG::getInstance()->i18n('_activation_control'));
 			return false;
 		}
 
@@ -506,22 +506,22 @@ class account{
 	{
 
 		if($this->password != $this->l2j_encrypt($pass)) {
-			MSG::add_error(LANG::i18n('_REGWARN_VPASS1'));
+			MSG::add_error(LANG::getInstance()->i18n('_REGWARN_VPASS1'));
 			return false;
 		}
 
 		if($this->login == $newpass) {
-			MSG::add_error(LANG::i18n('_REGWARN_UNAME3'));
+			MSG::add_error(LANG::getInstance()->i18n('_REGWARN_UNAME3'));
 			return false;
 		}
 
 		if(!$this->verif_char($newpass)) {
-			MSG::add_error(LANG::i18n('_REGWARN_VPASS1'));
+			MSG::add_error(LANG::getInstance()->i18n('_REGWARN_VPASS1'));
 			return false;
 		}
 
 		if ($newpass != $renewpass) {
-			MSG::add_error(LANG::i18n('_REGWARN_VPASS2'));
+			MSG::add_error(LANG::getInstance()->i18n('_REGWARN_VPASS2'));
 			return false;
 		}
 
@@ -614,22 +614,22 @@ class account{
 	{
 
 		if($this->password != $this->l2j_encrypt($pass)) {
-			MSG::add_error(LANG::i18n('_REGWARN_VPASS1'));
+			MSG::add_error(LANG::getInstance()->i18n('_REGWARN_VPASS1'));
 			return false;
 		}
 
 		if(!$this->verif_email($email)) {
-			MSG::add_error(LANG::i18n('_REGWARN_MAIL'));
+			MSG::add_error(LANG::getInstance()->i18n('_REGWARN_MAIL'));
 			return false;
 		}
 
 		if($this->is_email_exist($email)) {
-			MSG::add_error(LANG::i18n('_REGWARN_EMAIL_INUSE'));
+			MSG::add_error(LANG::getInstance()->i18n('_REGWARN_EMAIL_INUSE'));
 			return false;
 		}
 
 		if ($email != $reemail) {
-			MSG::add_error(LANG::i18n('_REGWARN_VEMAIL1'));
+			MSG::add_error(LANG::getInstance()->i18n('_REGWARN_VEMAIL1'));
 			return false;
 		}
 

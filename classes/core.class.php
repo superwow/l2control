@@ -19,7 +19,7 @@ class core {
 
 	public function loggout() {
 		ACCOUNT::load()->loggout();
-		MSG::add_valid(LANG::i18n('_logout'));
+		MSG::add_valid(LANG::getInstance()->i18n('_logout'));
 		$this->index();
 	}
 
@@ -27,13 +27,13 @@ class core {
 
 		if(empty($_POST['Luser']) || empty($_POST['Lpwd']))
 		{
-			MSG::add_error(LANG::i18n('_no_id_no_pwd'));
+			MSG::add_error(LANG::getInstance()->i18n('_no_id_no_pwd'));
 		}else{
 
 			$this->secure_post();
 
 			if(!ACCOUNT::load()->auth($_POST['Luser'], $_POST['Lpwd'], @$_POST['Limage']))
-				MSG::add_error(LANG::i18n('_wrong_auth'));
+				MSG::add_error(LANG::getInstance()->i18n('_wrong_auth'));
 		}
 
 		$this->index();
@@ -41,16 +41,16 @@ class core {
 
 	public function show_login() {
 		SmartyObject::getInstance()->assign('vm', array(
-		    'exist_account'		=> LANG::i18n('_exist_account'),
+		    'exist_account'		=> LANG::getInstance()->i18n('_exist_account'),
 		    'account_length'	=> CONFIG::g()->core_id_limit,
 		    'password_length'	=> CONFIG::g()->core_pwd_limit,
-		    'account'			=> LANG::i18n('_account'),
-		    'password'			=> LANG::i18n('_password'),
-		    'login_button'		=> LANG::i18n('_login_button'),
-		    'forgot_password'	=> LANG::i18n('_forgot_password'),
-		    'new_account'		=> LANG::i18n('_new_account'),
-		    'new_account_text'	=> LANG::i18n('_new_account_text'),
-		    'create_button'		=> LANG::i18n('_create_button')
+		    'account'			=> LANG::getInstance()->i18n('_account'),
+		    'password'			=> LANG::getInstance()->i18n('_password'),
+		    'login_button'		=> LANG::getInstance()->i18n('_login_button'),
+		    'forgot_password'	=> LANG::getInstance()->i18n('_forgot_password'),
+		    'new_account'		=> LANG::getInstance()->i18n('_new_account'),
+		    'new_account_text'	=> LANG::getInstance()->i18n('_new_account_text'),
+		    'create_button'		=> LANG::getInstance()->i18n('_create_button')
 		));
 		if(CONFIG::g()->core_act_img) {
 			SmartyObject::getInstance()->assign('image', 'image');
@@ -61,21 +61,21 @@ class core {
 	public function show_account() {
 		
 		SmartyObject::getInstance()->assign('vm', array(
-			'title_page'		=> LANG::i18n('_title_page'),
-		    'account_text'		=> LANG::i18n('_chg_pwd_text')
+			'title_page'		=> LANG::getInstance()->i18n('_title_page'),
+		    'account_text'		=> LANG::getInstance()->i18n('_chg_pwd_text')
 		));
 		
 		$modules = array();
 		
-		$modules[] = array('name'=>LANG::i18n('_chg_pwd'), 'link'=>'?action=show_chg_pwd'.$this->session_url());
+		$modules[] = array('name'=>LANG::getInstance()->i18n('_chg_pwd'), 'link'=>'?action=show_chg_pwd'.$this->session_url());
 		
 		if ($this->allow_char_mod())
-			$modules[] = array('name'=>LANG::i18n('_accounts_services'), 'link'=>'?action=acc_serv'.$this->session_url());
+			$modules[] = array('name'=>LANG::getInstance()->i18n('_accounts_services'), 'link'=>'?action=acc_serv'.$this->session_url());
 		
 		if (ACCOUNT::load()->can_chg_email())
-			$modules[] = array('name'=>LANG::i18n('_chg_email'), 'link'=>'?action=show_chg_email'.$this->session_url());
+			$modules[] = array('name'=>LANG::getInstance()->i18n('_chg_email'), 'link'=>'?action=show_chg_email'.$this->session_url());
 		
-		$modules[] = array('name'=>LANG::i18n('_logout_link'), 'link'=>'?action=loggout'.$this->session_url());
+		$modules[] = array('name'=>LANG::getInstance()->i18n('_logout_link'), 'link'=>'?action=loggout'.$this->session_url());
 		
 		SmartyObject::getInstance()->assign('modules', $modules);
 		
@@ -94,9 +94,9 @@ class core {
 
 	public function show_ack(){
 		SmartyObject::getInstance()->assign('vm', array(
-		    'terms_and_condition'		=> LANG::i18n('_TERMS_AND_CONDITION'),
-		    'return'					=> LANG::i18n('_return'),
-		    'accept_button'				=> LANG::i18n('_accept_button')
+		    'terms_and_condition'		=> LANG::getInstance()->i18n('_TERMS_AND_CONDITION'),
+		    'return'					=> LANG::getInstance()->i18n('_return'),
+		    'accept_button'				=> LANG::getInstance()->i18n('_accept_button')
 		));
 		SmartyObject::getInstance()->setTemplate('ack.tpl');
 	}
@@ -112,17 +112,17 @@ class core {
 		}
 		
 		SmartyObject::getInstance()->assign('vm', array(
-		    'new_account'			=> LANG::i18n('_new_account'),
-		    'new_account_text'		=> LANG::i18n('_new_account_text2'),
+		    'new_account'			=> LANG::getInstance()->i18n('_new_account'),
+		    'new_account_text'		=> LANG::getInstance()->i18n('_new_account_text2'),
 		    'account_length'		=> CONFIG::g()->core_id_limit,
 		    'password_length'		=> CONFIG::g()->core_pwd_limit,
-		    'account'				=> LANG::i18n('_account'),
-		    'password'				=> LANG::i18n('_password'),
-		    'password2'				=> LANG::i18n('_password2'),
-		    'email'					=> LANG::i18n('_email'),
-		    'image_control_desc'	=> LANG::i18n('_image_control_desc'),
-		    'return'				=> LANG::i18n('_return'),
-		    'create_button'			=> LANG::i18n('_create_button'),
+		    'account'				=> LANG::getInstance()->i18n('_account'),
+		    'password'				=> LANG::getInstance()->i18n('_password'),
+		    'password2'				=> LANG::getInstance()->i18n('_password2'),
+		    'email'					=> LANG::getInstance()->i18n('_email'),
+		    'image_control_desc'	=> LANG::getInstance()->i18n('_image_control_desc'),
+		    'return'				=> LANG::getInstance()->i18n('_return'),
+		    'create_button'			=> LANG::getInstance()->i18n('_create_button'),
 		    'post_id'				=> @$_POST['Luser'],
 		    'post_email'			=> @$_POST['Lemail']
 		));
@@ -134,14 +134,14 @@ class core {
 
 	public function show_forget() {
 		SmartyObject::getInstance()->assign('vm', array(
-		    'forgot_pwd'			=> LANG::i18n('_forgot_pwd'),
-		    'forgot_pwd_text'		=> LANG::i18n('_forgot_pwd_text'),
+		    'forgot_pwd'			=> LANG::getInstance()->i18n('_forgot_pwd'),
+		    'forgot_pwd_text'		=> LANG::getInstance()->i18n('_forgot_pwd_text'),
 		    'account_length'		=> CONFIG::g()->core_id_limit,
-		    'account'				=> LANG::i18n('_account'),
-		    'email'					=> LANG::i18n('_email'),
-		    'image_control_desc'	=> LANG::i18n('_image_control_desc'),
-		    'return'				=> LANG::i18n('_return'),
-		    'forgot_button'			=> LANG::i18n('_forgot_button'),
+		    'account'				=> LANG::getInstance()->i18n('_account'),
+		    'email'					=> LANG::getInstance()->i18n('_email'),
+		    'image_control_desc'	=> LANG::getInstance()->i18n('_image_control_desc'),
+		    'return'				=> LANG::getInstance()->i18n('_return'),
+		    'forgot_button'			=> LANG::getInstance()->i18n('_forgot_button'),
 		    'post_id'				=> @$_POST['Luser'],
 		    'post_email'			=> @$_POST['Lemail']
 		));
@@ -154,7 +154,7 @@ class core {
 	public function forgot_pwd() {
 
 		if(ACCOUNT::load()->forgot_pwd($_POST['Luser'], $_POST['Lemail'], @$_POST['Limage'])) {
-			MSG::add_valid(LANG::i18n('_password_request'));
+			MSG::add_valid(LANG::getInstance()->i18n('_password_request'));
 			$this->index();
 		}else{
 			$this->show_forget();
@@ -166,10 +166,10 @@ class core {
 	public function forgot_pwd_email() {
 
 		if(ACCOUNT::load()->forgot_pwd2($_GET['login'], $_GET['key'])) {
-			MSG::add_valid(LANG::i18n('_password_reseted'));
+			MSG::add_valid(LANG::getInstance()->i18n('_password_reseted'));
 			$this->index();
 		}else{
-			MSG::add_error(LANG::i18n('_control'));
+			MSG::add_error(LANG::getInstance()->i18n('_control'));
 			$this->show_forget();
 		}
 
@@ -179,7 +179,7 @@ class core {
 	public function chg_pwd_form() {
 
 		if(!ACCOUNT::load()->verif()) {
-			MSG::add_error(LANG::i18n('_WARN_NOT_LOGGED'));
+			MSG::add_error(LANG::getInstance()->i18n('_WARN_NOT_LOGGED'));
 			$this->index();
 			return;
 		}
@@ -187,7 +187,7 @@ class core {
 		$account = unserialize($_SESSION['acm']);
 
 		if(ACCOUNT::load()->edit_password($_POST['Lpwdold'], $_POST['Lpwd'], $_POST['Lpwd2'])) {
-			MSG::add_valid(LANG::i18n('_change_pwd_valid'));
+			MSG::add_valid(LANG::getInstance()->i18n('_change_pwd_valid'));
 			$this->show_account();
 		}
 		else
@@ -199,20 +199,20 @@ class core {
 	public function show_chg_pwd() {
 		
 		if(!ACCOUNT::load()->verif()) {
-			MSG::add_error(LANG::i18n('_WARN_NOT_LOGGED'));
+			MSG::add_error(LANG::getInstance()->i18n('_WARN_NOT_LOGGED'));
 			$this->index();
 			return;
 		}
 
 		SmartyObject::getInstance()->assign('vm', array(
-		    'chg_pwd'				=> LANG::i18n('_chg_pwd'),
-		    'chg_pwd_text'			=> LANG::i18n('_chg_pwd_text'),
+		    'chg_pwd'				=> LANG::getInstance()->i18n('_chg_pwd'),
+		    'chg_pwd_text'			=> LANG::getInstance()->i18n('_chg_pwd_text'),
 		    'password_length'		=> CONFIG::g()->core_pwd_limit,
-		    'passwordold'			=> LANG::i18n('_passwordold'),
-		    'password'				=> LANG::i18n('_password'),
-		    'password2'				=> LANG::i18n('_password2'),
-		    'return'				=> LANG::i18n('_return'),
-		    'chg_button'			=> LANG::i18n('_chg_button')
+		    'passwordold'			=> LANG::getInstance()->i18n('_passwordold'),
+		    'password'				=> LANG::getInstance()->i18n('_password'),
+		    'password2'				=> LANG::getInstance()->i18n('_password2'),
+		    'return'				=> LANG::getInstance()->i18n('_return'),
+		    'chg_button'			=> LANG::getInstance()->i18n('_chg_button')
 		));
 		
 		SmartyObject::getInstance()->setTemplate('chg_pwd.tpl');
@@ -221,7 +221,7 @@ class core {
 	public function chg_email_form() {
 
 		if(!ACCOUNT::load()->verif()) {
-			MSG::add_error(LANG::i18n('_WARN_NOT_LOGGED'));
+			MSG::add_error(LANG::getInstance()->i18n('_WARN_NOT_LOGGED'));
 			$this->index();
 			return;
 		}
@@ -232,7 +232,7 @@ class core {
 		}
 
 		if(ACCOUNT::load()->edit_email($_POST['Lpwd'], $_POST['Lemail'], $_POST['Lemail2'])) {
-			MSG::add_valid(LANG::i18n('_change_email_valid'));
+			MSG::add_valid(LANG::getInstance()->i18n('_change_email_valid'));
 			$this->show_account();
 		}
 		else
@@ -244,7 +244,7 @@ class core {
 	public function show_chg_email() {
 		
 		if(!ACCOUNT::load()->verif()) {
-			MSG::add_error(LANG::i18n('_WARN_NOT_LOGGED'));
+			MSG::add_error(LANG::getInstance()->i18n('_WARN_NOT_LOGGED'));
 			$this->index();
 			return;
 		}
@@ -255,14 +255,14 @@ class core {
 		}
 		
 		SmartyObject::getInstance()->assign('vm', array(
-		    'chg_pwd'				=> LANG::i18n('_chg_email'),
-		    'chg_pwd_text'			=> LANG::i18n('_chg_email_text'),
+		    'chg_pwd'				=> LANG::getInstance()->i18n('_chg_email'),
+		    'chg_pwd_text'			=> LANG::getInstance()->i18n('_chg_email_text'),
 		    'password_length'		=> CONFIG::g()->core_pwd_limit,
-		    'password'				=> LANG::i18n('_password'),
-		    'email'					=> LANG::i18n('_email'),
-		    'email2'				=> LANG::i18n('_email2'),
-		    'return'				=> LANG::i18n('_return'),
-		    'chg_button'			=> LANG::i18n('_chg_button')
+		    'password'				=> LANG::getInstance()->i18n('_password'),
+		    'email'					=> LANG::getInstance()->i18n('_email'),
+		    'email2'				=> LANG::getInstance()->i18n('_email2'),
+		    'return'				=> LANG::getInstance()->i18n('_return'),
+		    'chg_button'			=> LANG::getInstance()->i18n('_chg_button')
 		));
 		
 		SmartyObject::getInstance()->setTemplate('chg_email.tpl');
@@ -272,9 +272,9 @@ class core {
 	public function email_validation() {
 
 		if(ACCOUNT::load()->email_validation($_GET['login'], $_GET['key'])) {
-			MSG::add_valid(LANG::i18n('_change_email_valid'));
+			MSG::add_valid(LANG::getInstance()->i18n('_change_email_valid'));
 		}else{
-			MSG::add_error(LANG::i18n('_control'));
+			MSG::add_error(LANG::getInstance()->i18n('_control'));
 		}
 		
 		$this->index();
@@ -285,35 +285,35 @@ class core {
 	public function acc_serv(){
 		
 		if(!ACCOUNT::load()->verif()) {
-			MSG::add_error(LANG::i18n('_WARN_NOT_LOGGED'));
+			MSG::add_error(LANG::getInstance()->i18n('_WARN_NOT_LOGGED'));
 			$this->index();
 			return;
 		}
 		
 		if(!$this->allow_char_mod()) {
-			MSG::add_error(LANG::i18n('_acc_serv_off'));
+			MSG::add_error(LANG::getInstance()->i18n('_acc_serv_off'));
 			$this->index();
 			return;
 		}
 		
 		SmartyObject::getInstance()->assign('vm', array(
-			'select_item'			=> LANG::i18n('_accounts_services'),
-			'return'				=> LANG::i18n('_return'),
+			'select_item'			=> LANG::getInstance()->i18n('_accounts_services'),
+			'return'				=> LANG::getInstance()->i18n('_return'),
 		));
 		
 		$items = array();
 		
 		if(CONFIG::g()->service_fix)
-			$items[] = array('id' => 0, 'name' => LANG::i18n('_character_fix'), 'link' => '?action=char_fix_l'.$this->session_url());
+			$items[] = array('id' => 0, 'name' => LANG::getInstance()->i18n('_character_fix'), 'link' => '?action=char_fix_l'.$this->session_url());
 		
 		if(CONFIG::g()->service_unstuck)
-			$items[] = array('id' => 1, 'name' => LANG::i18n('_character_unstuck'), 'link' => '?action=char_unstuck_l'.$this->session_url());
+			$items[] = array('id' => 1, 'name' => LANG::getInstance()->i18n('_character_unstuck'), 'link' => '?action=char_unstuck_l'.$this->session_url());
 		
 		if(CONFIG::g()->service_sex)
-			$items[] = array('id' => 1, 'name' => LANG::i18n('_character_sex'), 'link' => '?action=char_sex_l'.$this->session_url());
+			$items[] = array('id' => 1, 'name' => LANG::getInstance()->i18n('_character_sex'), 'link' => '?action=char_sex_l'.$this->session_url());
 		
 		if(CONFIG::g()->service_name)
-			$items[] = array('id' => 1, 'name' => LANG::i18n('_character_name'), 'link' => '?action=char_name_l'.$this->session_url());
+			$items[] = array('id' => 1, 'name' => LANG::getInstance()->i18n('_character_name'), 'link' => '?action=char_name_l'.$this->session_url());
 		
 		SmartyObject::getInstance()->assign('items', $items);
 		
@@ -325,7 +325,7 @@ class core {
 	private function char_ufl($mod = null){
 		
 		if(!ACCOUNT::load()->verif()) {
-			MSG::add_error(LANG::i18n('_WARN_NOT_LOGGED'));
+			MSG::add_error(LANG::getInstance()->i18n('_WARN_NOT_LOGGED'));
 			$this->index();
 			return;
 		}
@@ -335,7 +335,7 @@ class core {
 		$mode = 'service_'.$mod;
 		
 		if(!$this->allow_char_mod() || !CONFIG::g()->$mode) {
-			MSG::add_error(LANG::i18n('_acc_serv_off'));
+			MSG::add_error(LANG::getInstance()->i18n('_acc_serv_off'));
 			$this->index();
 			return;
 		}
@@ -344,9 +344,9 @@ class core {
 		$worlds = WORLD::load_worlds(); // charging world
 		
 		SmartyObject::getInstance()->assign('vm', array(
-			'select_item'			=> LANG::i18n('_character_'.$mod),
-			'select_desc'			=> LANG::i18n('_character_'.$mod.'_desc'),
-		    'return'				=> LANG::i18n('_return')
+			'select_item'			=> LANG::getInstance()->i18n('_character_'.$mod),
+			'select_desc'			=> LANG::getInstance()->i18n('_character_'.$mod.'_desc'),
+		    'return'				=> LANG::getInstance()->i18n('_return')
 		));
 		
 		$items = array();
@@ -358,7 +358,7 @@ class core {
 		}
 		
 		if(empty($items))
-			$items[] = array('id' => 0, 'name' => LANG::i18n('_any_character'), 'link' => '?action=acc_serv'.$this->session_url());
+			$items[] = array('id' => 0, 'name' => LANG::getInstance()->i18n('_any_character'), 'link' => '?action=acc_serv'.$this->session_url());
 		
 		SmartyObject::getInstance()->assign('items', $items);
 		
@@ -386,7 +386,7 @@ class core {
 	private function char_uf($mod = null) {
 		
 		if(!ACCOUNT::load()->verif()) {
-			MSG::add_error(LANG::i18n('_WARN_NOT_LOGGED'));
+			MSG::add_error(LANG::getInstance()->i18n('_WARN_NOT_LOGGED'));
 			$this->index();
 			return;
 		}
@@ -396,13 +396,13 @@ class core {
 		$mode = 'service_'.$mod;
 		
 		if(!$this->allow_char_mod() || !CONFIG::g()->$mode) {
-			MSG::add_error(LANG::i18n('_acc_serv_off'));
+			MSG::add_error(LANG::getInstance()->i18n('_acc_serv_off'));
 			$this->index();
 			return;
 		}
 		
 		if(empty($_GET['wid']) || empty($_GET['cid'])) {
-			MSG::add_error(LANG::i18n('_error_select_char'));
+			MSG::add_error(LANG::getInstance()->i18n('_error_select_char'));
 			$this->index();
 			return;
 		}
@@ -410,20 +410,20 @@ class core {
 		$char = new character($_GET['cid'], $_GET['wid']);
 		
 		if(is_null($char->getId())) {
-			MSG::add_error(LANG::i18n('_error_select_char'));
+			MSG::add_error(LANG::getInstance()->i18n('_error_select_char'));
 			$this->index();
 			return;
 		}
 		
 		SmartyObject::getInstance()->assign('vm', array(
-			'select_item'	=> LANG::i18n('_character_'.$mod),
-			'select_desc'	=> sprintf(LANG::i18n('_character_'.$mod.'_confirm'), $char->getName(), world::get_name_world($char->getWorldId()), LANG::i18n('_character_sex_'.$char->getGender()), LANG::i18n('_character_sex_'.((int)(!$char->getGender())))),
-		    'return'		=> LANG::i18n('_return')
+			'select_item'	=> LANG::getInstance()->i18n('_character_'.$mod),
+			'select_desc'	=> sprintf(LANG::getInstance()->i18n('_character_'.$mod.'_confirm'), $char->getName(), world::get_name_world($char->getWorldId()), LANG::getInstance()->i18n('_character_sex_'.$char->getGender()), LANG::getInstance()->i18n('_character_sex_'.((int)(!$char->getGender())))),
+		    'return'		=> LANG::getInstance()->i18n('_return')
 		));
 		
 		$items = array();
-		$items[] = array('id' => 1, 'name' => LANG::i18n('_confirm'), 'link' => '?action=char_'.$mod.'_confirm&wid='.$char->getWorldId().'&cid='.$char->getId().$this->session_url());
-		$items[] = array('id' => 1, 'name' => LANG::i18n('_back'), 'link' => '?action=char_'.$mod.'_l'.$this->session_url());
+		$items[] = array('id' => 1, 'name' => LANG::getInstance()->i18n('_confirm'), 'link' => '?action=char_'.$mod.'_confirm&wid='.$char->getWorldId().'&cid='.$char->getId().$this->session_url());
+		$items[] = array('id' => 1, 'name' => LANG::getInstance()->i18n('_back'), 'link' => '?action=char_'.$mod.'_l'.$this->session_url());
 		SmartyObject::getInstance()->assign('items', $items);
 		
 		SmartyObject::getInstance()->register_block('dynamic', 'smarty_block_dynamic', false);
@@ -449,7 +449,7 @@ class core {
 	private function char_ufc($mod = null) {
 		
 		if(!ACCOUNT::load()->verif()) {
-			MSG::add_error(LANG::i18n('_WARN_NOT_LOGGED'));
+			MSG::add_error(LANG::getInstance()->i18n('_WARN_NOT_LOGGED'));
 			$this->index();
 			return;
 		}
@@ -459,13 +459,13 @@ class core {
 		$mode = 'service_'.$mod;
 		
 		if(!$this->allow_char_mod() || !CONFIG::g()->$mode) {
-			MSG::add_error(LANG::i18n('_acc_serv_off'));
+			MSG::add_error(LANG::getInstance()->i18n('_acc_serv_off'));
 			$this->index();
 			return;
 		}
 		
 		if(empty($_GET['wid']) || empty($_GET['cid'])) {
-			MSG::add_error(LANG::i18n('_error_select_char'));
+			MSG::add_error(LANG::getInstance()->i18n('_error_select_char'));
 			$this->index();
 			return;
 		}
@@ -473,9 +473,9 @@ class core {
 		$char = new character($_GET['cid'], $_GET['wid']);
 
 		if(!$char->$mod())
-			MSG::add_error(LANG::i18n('_character_'.$mod.'_no'));
+			MSG::add_error(LANG::getInstance()->i18n('_character_'.$mod.'_no'));
 		else
-			MSG::add_valid(LANG::i18n('_character_'.$mod.'_yes'));
+			MSG::add_valid(LANG::getInstance()->i18n('_character_'.$mod.'_yes'));
 
 		$this->index();
 
@@ -501,9 +501,9 @@ class core {
 	public function activation() {
 
 		if(!ACCOUNT::load()->valid_account(htmlentities($_GET['key'])))
-			MSG::add_error(LANG::i18n('_activation_control'));
+			MSG::add_error(LANG::getInstance()->i18n('_activation_control'));
 		else
-			MSG::add_valid(LANG::i18n('_account_actived'));
+			MSG::add_valid(LANG::getInstance()->i18n('_account_actived'));
 
 		$this->index();
 
