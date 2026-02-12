@@ -298,6 +298,7 @@ class core {
 		
 		SmartyObject::getInstance()->assign('vm', array(
 			'select_item'			=> LANG::getInstance()->i18n('_accounts_services'),
+			'select_desc'			=> '',
 			'return'				=> LANG::getInstance()->i18n('_return'),
 		));
 		
