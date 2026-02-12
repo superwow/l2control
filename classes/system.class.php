@@ -72,7 +72,7 @@ class msg {
 		return self::$instance;
 	}
 
-	public function add_error($txt) {
+	public static function add_error($txt) {
 		$d = MSG::singleton();
 		$d->error_text .= $txt.'<br />'."\n\r";
 	}
@@ -82,7 +82,7 @@ class msg {
 		return $d->error_text;
 	}
 
-	public function add_valid($txt) {
+	public static function add_valid($txt) {
 		$d = MSG::singleton();
 		$d->valid_text .= $txt.'<br />'."\n\r";
 	}
@@ -126,7 +126,7 @@ class debug {
 		return self::$instance;
 	}
 
-	public function add($txt, $color = null) {
+	public static function add($txt, $color = null) {
 		$d = DEBUG::singleton();
 		$txt = (is_null($color)) ? $txt : '<font style="color:'.$color.';"><b>'.$txt.'</b></font>';
 		$d->debug_text .= $txt.'<br />'."\n\r";
@@ -169,7 +169,7 @@ class logdaemon {
 		return self::$instance;
 	}
 
-	public function add($txt) {
+	public static function add($txt) {
 		if(!LOG)
 			return false;
 		
