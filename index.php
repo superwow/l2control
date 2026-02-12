@@ -24,7 +24,7 @@ if(file_exists('./install.php'))
 
 if(SID != '') {
 	SmartyObject::getInstance()->assign('session_id', '?'.SID);
-	DEBUG::add(LANG::i18n('_cookie_prob'));
+	DEBUG::add(LANG::getInstance()->i18n('_cookie_prob'));
 }
 
 $action = (!empty($_GET['action'])) ? $_GET['action'] : 'index';
@@ -37,8 +37,8 @@ $action = htmlspecialchars($action);
 // Display
 //------------------------------------------------------------------
 
-SmartyObject::getInstance()->assign('vm_title', LANG::i18n('_title'));
-SmartyObject::getInstance()->assign('vm_title_page', LANG::i18n('_title_page'));
+SmartyObject::getInstance()->assign('vm_title', LANG::getInstance()->i18n('_title'));
+SmartyObject::getInstance()->assign('vm_title_page', LANG::getInstance()->i18n('_title_page'));
 
 SmartyObject::getInstance()->assign('vm_charset_type', CONFIG::g()->core_iso_type);
 

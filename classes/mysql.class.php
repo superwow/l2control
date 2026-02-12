@@ -44,11 +44,11 @@ class mysql {
 	private function connect () {
 		$this->db_inst = mysqli_connect($this->_host, $this->_user, $this->_pass);
 		if(!$this->db_inst) {
-			MSG::add_error(LANG::i18n('_error_db_connect'));
+			MSG::add_error(LANG::getInstance()->i18n('_error_db_connect'));
 			return false;
 		}
 		if(!mysqli_select_db($this->db_inst, $this->_db)) {
-			MSG::add_error(LANG::i18n('_error_db_select'));
+			MSG::add_error(LANG::getInstance()->i18n('_error_db_select'));
 			return false;
 		}
 		return true;

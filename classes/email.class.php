@@ -117,24 +117,24 @@ class email{
 			break;
 			case 'created_account_validation':
 				$this->url = $this->get_url('activation&amp;key='.$this->code);
-				$this->send_email(LANG::i18n('_email_title_verif'), LANG::i18n('_email_message_verif'));
+				$this->send_email(LANG::getInstance()->i18n('_email_title_verif'), LANG::getInstance()->i18n('_email_message_verif'));
 			break;
 			case 'created_account_activation':
-				$this->send_email(LANG::i18n('_email_title_ok'), LANG::i18n('_email_message_ok'));
+				$this->send_email(LANG::getInstance()->i18n('_email_title_ok'), LANG::getInstance()->i18n('_email_message_ok'));
 			break;
 			case 'forget_password_validation':
 				$this->url = $this->get_url('forgot_pwd_email&amp;login='.$this->login.'&amp;key='.$this->code);
-				$this->send_email(LANG::i18n('_email_title_change_pwd'), LANG::i18n('_email_message_change_pwd'));
+				$this->send_email(LANG::getInstance()->i18n('_email_title_change_pwd'), LANG::getInstance()->i18n('_email_message_change_pwd'));
 			break;
 			case 'password_reseted':
-				$this->send_email(LANG::i18n('_email_title_change_pwd_ok'), LANG::i18n('_email_message_change_pwd_ok'));
+				$this->send_email(LANG::getInstance()->i18n('_email_title_change_pwd_ok'), LANG::getInstance()->i18n('_email_message_change_pwd_ok'));
 			break;
 			case 'email_validation':
 				$this->url = $this->get_url('email_validation&amp;login='.$this->login.'&amp;key='.$this->code);
-				$this->send_email(LANG::i18n('_email_title_verif'), LANG::i18n('_email_message_verif'));
+				$this->send_email(LANG::getInstance()->i18n('_email_title_verif'), LANG::getInstance()->i18n('_email_message_verif'));
 			break;
 			case 'modified_email_activation':
-				$this->send_email(LANG::i18n('_email_title_change_email_ok'), LANG::i18n('_email_message_change_email_ok'));
+				$this->send_email(LANG::getInstance()->i18n('_email_title_change_email_ok'), LANG::getInstance()->i18n('_email_message_change_email_ok'));
 			break;
 		}
 	}
