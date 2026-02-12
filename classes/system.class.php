@@ -40,6 +40,17 @@ class SmartyObject extends Smarty {
 	public function assign($tpl_var, $value = null, $nocache = false, $scope = null) {
 		parent::assign($tpl_var, $value, $nocache, $scope);
 	}
+
+	/**
+	 * Backward-compatible wrapper for legacy Smarty 2 API usage.
+	 */
+	public function register_block($name, $callback, $cacheable = true, $cache_attr = null) {
+		if (isset($this->registered_plugins['block'][$name])) {
+			return;
+		}
+
+		$this->registerPlugin('block', $name, $callback, $cacheable, $cache_attr);
+	}
 	
 	public function display($template = null, $cache_id = null, $compile_id = null, $parent = null) {
 		DEBUG::publish($this);
