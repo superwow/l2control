@@ -4,7 +4,8 @@ defined( '_ACM_VALID' ) or die( 'Direct Access to this location is not allowed.'
 
 class character {
 
-	private $charId, $char_name, $worldId, $base_class, $sex, $accesslevel, $x, $y, $region, $online, $clanid, $level;
+	private $charId, $char_name, $worldId, $base_class, $classid, $sex, $accesslevel, $x, $y, $region, $online, $clanid, $level, $karma;
+	private $regions = array();
 
 	function __construct($charId, $worldId) {
 

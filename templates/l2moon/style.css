@@ -1,0 +1,583 @@
+/* ============================================================
+   L2Moon Theme - Dark Moonlight Design
+   Color scheme inspired by l2moon.ru
+   ============================================================ */
+
+:root {
+  --moon-bg-dark: #0a0e1a;
+  --moon-bg-card: rgba(12, 18, 38, 0.85);
+  --moon-bg-card-hover: rgba(18, 26, 52, 0.95);
+  --moon-border: rgba(100, 140, 220, 0.15);
+  --moon-border-bright: rgba(100, 140, 220, 0.35);
+  --moon-accent: #4a8eff;
+  --moon-accent-hover: #6ba3ff;
+  --moon-accent-glow: rgba(74, 142, 255, 0.3);
+  --moon-gold: #d4a843;
+  --moon-gold-dim: #b08930;
+  --moon-silver: #c0cde0;
+  --moon-text: #d0d8e8;
+  --moon-text-dim: #7889a8;
+  --moon-success: #3ddc84;
+  --moon-danger: #ff5252;
+  --moon-warning: #ffb74d;
+  --moon-navbar-bg: rgba(8, 12, 28, 0.95);
+  --moon-input-bg: rgba(15, 22, 45, 0.8);
+  --moon-input-border: rgba(74, 142, 255, 0.2);
+  --moon-input-focus: rgba(74, 142, 255, 0.5);
+  --moon-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --moon-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* ---- Base ---- */
+html {
+  min-height: 100%;
+}
+
+body {
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  color: var(--moon-text);
+  background: var(--moon-bg-dark);
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(30, 60, 120, 0.18) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(60, 40, 120, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(20, 40, 80, 0.15) 0%, transparent 60%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+a {
+  color: var(--moon-accent);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: var(--moon-accent-hover);
+  text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #e8edf5;
+  font-weight: 600;
+}
+
+hr {
+  border-color: var(--moon-border);
+  opacity: 0.5;
+}
+
+/* ---- Navbar ---- */
+.navbar-moon {
+  background: var(--moon-navbar-bg);
+  border-bottom: 1px solid var(--moon-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-moon .navbar-brand {
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.3rem;
+  letter-spacing: 0.5px;
+}
+
+.navbar-moon .navbar-brand .brand-accent {
+  color: var(--moon-accent);
+}
+
+.navbar-moon .nav-link {
+  color: var(--moon-text-dim);
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.navbar-moon .nav-link:hover,
+.navbar-moon .nav-link.active {
+  color: #fff;
+  background: rgba(74, 142, 255, 0.1);
+}
+
+.navbar-moon .navbar-toggler {
+  border-color: var(--moon-border);
+}
+
+.navbar-moon .navbar-toggler-icon {
+  filter: invert(0.8);
+}
+
+/* ---- Logo ---- */
+.logo-container {
+  text-align: center;
+  padding: 1.5rem 0 0.5rem;
+}
+
+.logo-container img {
+  max-height: 80px;
+  filter: drop-shadow(0 0 20px rgba(74, 142, 255, 0.2));
+  transition: filter 0.3s;
+}
+
+.logo-container img:hover {
+  filter: drop-shadow(0 0 30px rgba(74, 142, 255, 0.4));
+}
+
+/* ---- Main Content Card ---- */
+.main-card {
+  max-width: 520px;
+  margin: 1.5rem auto;
+  padding: 2rem;
+  background: var(--moon-bg-card);
+  border: 1px solid var(--moon-border);
+  border-radius: 16px;
+  box-shadow: var(--moon-shadow);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.main-card-wide {
+  max-width: 900px;
+}
+
+.main-card-full {
+  max-width: 1200px;
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.form-header h2 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  color: #e8edf5;
+}
+
+.form-header p {
+  color: var(--moon-text-dim);
+  font-size: 0.9rem;
+}
+
+/* ---- Forms ---- */
+.form-control,
+.form-select {
+  background: var(--moon-input-bg);
+  border: 1px solid var(--moon-input-border);
+  color: var(--moon-text);
+  border-radius: 10px;
+  padding: 0.6rem 1rem;
+  transition: all 0.2s;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background: rgba(18, 28, 55, 0.9);
+  border-color: var(--moon-input-focus);
+  box-shadow: 0 0 0 3px var(--moon-accent-glow);
+  color: #fff;
+}
+
+.form-control::placeholder {
+  color: var(--moon-text-dim);
+  opacity: 0.6;
+}
+
+.form-label {
+  color: var(--moon-silver);
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+}
+
+/* ---- Buttons ---- */
+.btn-moon {
+  background: linear-gradient(135deg, var(--moon-accent) 0%, #3670d4 100%);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.6rem 2rem;
+  font-weight: 600;
+  transition: all 0.25s;
+  box-shadow: 0 4px 12px rgba(74, 142, 255, 0.25);
+}
+
+.btn-moon:hover {
+  background: linear-gradient(135deg, var(--moon-accent-hover) 0%, #4a82e0 100%);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(74, 142, 255, 0.35);
+}
+
+.btn-moon:active {
+  transform: translateY(0);
+}
+
+.btn-moon-outline {
+  background: transparent;
+  color: var(--moon-accent);
+  border: 1px solid var(--moon-accent);
+  border-radius: 10px;
+  padding: 0.6rem 2rem;
+  font-weight: 600;
+  transition: all 0.25s;
+}
+
+.btn-moon-outline:hover {
+  background: rgba(74, 142, 255, 0.1);
+  color: var(--moon-accent-hover);
+  border-color: var(--moon-accent-hover);
+}
+
+.btn-moon-gold {
+  background: linear-gradient(135deg, var(--moon-gold) 0%, var(--moon-gold-dim) 100%);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.6rem 2rem;
+  font-weight: 600;
+  transition: all 0.25s;
+  box-shadow: 0 4px 12px rgba(212, 168, 67, 0.2);
+}
+
+.btn-moon-gold:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(212, 168, 67, 0.35);
+  color: #fff;
+}
+
+.btn-moon-danger {
+  background: linear-gradient(135deg, var(--moon-danger) 0%, #d43636 100%);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.6rem 2rem;
+  font-weight: 600;
+  transition: all 0.25s;
+}
+
+/* ---- Alerts ---- */
+.alert-moon-error {
+  background: rgba(255, 82, 82, 0.12);
+  border: 1px solid rgba(255, 82, 82, 0.3);
+  color: #ff8a8a;
+  border-radius: 10px;
+  padding: 0.8rem 1.2rem;
+}
+
+.alert-moon-success {
+  background: rgba(61, 220, 132, 0.1);
+  border: 1px solid rgba(61, 220, 132, 0.3);
+  color: #6aeaa0;
+  border-radius: 10px;
+  padding: 0.8rem 1.2rem;
+}
+
+.error {
+  text-align: center;
+  margin: 1rem 0;
+  color: #ff8a8a;
+  padding: 0.8rem 1.2rem;
+  background: rgba(255, 82, 82, 0.12);
+  border: 1px solid rgba(255, 82, 82, 0.3);
+  border-radius: 10px;
+}
+
+.valid {
+  text-align: center;
+  margin: 1rem 0;
+  color: #6aeaa0;
+  padding: 0.8rem 1.2rem;
+  background: rgba(61, 220, 132, 0.1);
+  border: 1px solid rgba(61, 220, 132, 0.3);
+  border-radius: 10px;
+}
+
+/* ---- Menu / Lists ---- */
+ul.menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+ul.menu li {
+  margin: 0.4rem 0;
+}
+
+ul.menu li a {
+  display: block;
+  padding: 0.8rem 1.2rem;
+  background: rgba(74, 142, 255, 0.05);
+  border: 1px solid var(--moon-border);
+  border-radius: 10px;
+  color: var(--moon-text);
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+ul.menu li a:hover {
+  background: rgba(74, 142, 255, 0.12);
+  border-color: var(--moon-border-bright);
+  color: #fff;
+  transform: translateX(4px);
+}
+
+ul.menu li a::before {
+  content: '\203A';
+  margin-right: 0.8rem;
+  color: var(--moon-accent);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* ---- Stats Cards ---- */
+.stat-card {
+  background: var(--moon-bg-card);
+  border: 1px solid var(--moon-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.25s;
+}
+
+.stat-card:hover {
+  border-color: var(--moon-border-bright);
+  transform: translateY(-2px);
+  box-shadow: var(--moon-shadow);
+}
+
+.stat-card .stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--moon-accent);
+  line-height: 1.2;
+}
+
+.stat-card .stat-label {
+  font-size: 0.85rem;
+  color: var(--moon-text-dim);
+  margin-top: 0.3rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.stat-card.gold .stat-value {
+  color: var(--moon-gold);
+}
+
+.stat-card.success .stat-value {
+  color: var(--moon-success);
+}
+
+/* ---- Tables ---- */
+.table-moon {
+  color: var(--moon-text);
+}
+
+.table-moon thead th {
+  background: rgba(74, 142, 255, 0.08);
+  border-bottom: 2px solid var(--moon-border-bright);
+  color: var(--moon-silver);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  padding: 0.8rem;
+}
+
+.table-moon tbody td {
+  border-bottom: 1px solid var(--moon-border);
+  padding: 0.7rem 0.8rem;
+  vertical-align: middle;
+}
+
+.table-moon tbody tr {
+  transition: background 0.15s;
+}
+
+.table-moon tbody tr:hover {
+  background: rgba(74, 142, 255, 0.05);
+}
+
+.table-moon .rank-1 { color: var(--moon-gold); font-weight: 700; }
+.table-moon .rank-2 { color: var(--moon-silver); font-weight: 600; }
+.table-moon .rank-3 { color: #cd7f32; font-weight: 600; }
+
+/* ---- Badges ---- */
+.badge-moon {
+  background: rgba(74, 142, 255, 0.15);
+  color: var(--moon-accent);
+  border: 1px solid rgba(74, 142, 255, 0.25);
+  font-weight: 500;
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+}
+
+.badge-online {
+  background: rgba(61, 220, 132, 0.15);
+  color: var(--moon-success);
+  border: 1px solid rgba(61, 220, 132, 0.25);
+}
+
+.badge-offline {
+  background: rgba(255, 82, 82, 0.12);
+  color: var(--moon-danger);
+  border: 1px solid rgba(255, 82, 82, 0.25);
+}
+
+.badge-class {
+  background: rgba(212, 168, 67, 0.12);
+  color: var(--moon-gold);
+  border: 1px solid rgba(212, 168, 67, 0.25);
+}
+
+/* ---- World Map ---- */
+.world-map-container {
+  position: relative;
+  background: var(--moon-bg-card);
+  border: 1px solid var(--moon-border);
+  border-radius: 16px;
+  overflow: hidden;
+  padding: 1rem;
+}
+
+.world-map-container svg {
+  width: 100%;
+  height: auto;
+}
+
+.map-location {
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.map-location:hover {
+  filter: brightness(1.5);
+}
+
+.map-tooltip {
+  position: absolute;
+  background: var(--moon-bg-card);
+  border: 1px solid var(--moon-border-bright);
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  font-size: 0.85rem;
+  box-shadow: var(--moon-shadow);
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* ---- Captcha ---- */
+.captcha img {
+  cursor: pointer;
+  height: 40px;
+  border-radius: 6px;
+  border: 1px solid var(--moon-border);
+}
+
+.captcha img:hover {
+  border-color: var(--moon-accent);
+}
+
+/* ---- Footer ---- */
+.footer-moon {
+  text-align: center;
+  padding: 1.5rem 0;
+  color: var(--moon-text-dim);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--moon-border);
+  margin-top: 2rem;
+}
+
+.footer-moon a {
+  color: var(--moon-text-dim);
+}
+
+.footer-moon a:hover {
+  color: var(--moon-accent);
+}
+
+/* ---- Progress Bars ---- */
+.progress-moon {
+  background: rgba(74, 142, 255, 0.08);
+  border-radius: 8px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.progress-moon .progress-bar {
+  background: linear-gradient(90deg, var(--moon-accent), #6ba3ff);
+  border-radius: 8px;
+}
+
+/* ---- Animations ---- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px var(--moon-accent-glow);
+  }
+  50% {
+    box-shadow: 0 0 20px var(--moon-accent-glow);
+  }
+}
+
+.online-indicator {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--moon-success);
+  animation: pulse-glow 2s infinite;
+  margin-right: 0.4rem;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 576px) {
+  .main-card {
+    margin: 1rem 0.5rem;
+    padding: 1.5rem 1rem;
+  }
+
+  .stat-card .stat-value {
+    font-size: 1.5rem;
+  }
+
+  .navbar-moon .navbar-brand {
+    font-size: 1.1rem;
+  }
+}
+
+/* ---- Scrollbar ---- */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--moon-bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(74, 142, 255, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(74, 142, 255, 0.35);
+}

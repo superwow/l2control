@@ -351,8 +351,8 @@ class account{
 			return false;
 		}
 
-		$this->login = htmlentities($login);
-		$this->password = htmlentities($password);
+		$this->login = htmlentities((string)($login ?? ''), ENT_QUOTES, 'UTF-8');
+		$this->password = htmlentities((string)($password ?? ''), ENT_QUOTES, 'UTF-8');
 
 		$this->password = $this->l2j_encrypt($this->password);
 
