@@ -32,7 +32,7 @@ class core {
 
 			$this->secure_post();
 
-			if(!ACCOUNT::load()->auth($_POST['Luser'], $_POST['Lpwd'], @$_POST['Limage']))
+			if(!ACCOUNT::load()->auth($_POST['Luser'], $_POST['Lpwd'], $_POST['Limage'] ?? null))
 				MSG::add_error(LANG::getInstance()->i18n('_wrong_auth'));
 		}
 
@@ -85,7 +85,7 @@ class core {
 
 	public function registration() {
 
-		if(ACCOUNT::load()->create($_POST['Luser'], $_POST['Lpwd'], $_POST['Lpwd2'], $_POST['Lemail'], @$_POST['Limage'])) {
+		if(ACCOUNT::load()->create($_POST['Luser'], $_POST['Lpwd'], $_POST['Lpwd2'], $_POST['Lemail'], $_POST['Limage'] ?? null)) {
 			$this->show_login();
 		}else{
 			$this->show_create(true);
@@ -103,7 +103,7 @@ class core {
 
 	public function show_create($acka = false) {
 
-		$ack = (@$_POST['ack'] == 'ack') ? true : false;
+		$ack = (($_POST['ack'] ?? '') === 'ack') ? true : false;
 		$ack = ($acka) ? true : $ack;
 
 		if(CONFIG::g()->core_ack_cond && !$ack) {
@@ -123,8 +123,8 @@ class core {
 		    'image_control_desc'	=> LANG::getInstance()->i18n('_image_control_desc'),
 		    'return'				=> LANG::getInstance()->i18n('_return'),
 		    'create_button'			=> LANG::getInstance()->i18n('_create_button'),
-		    'post_id'				=> @$_POST['Luser'],
-		    'post_email'			=> @$_POST['Lemail']
+		    'post_id'				=> $_POST['Luser'] ?? '',
+		    'post_email'			=> $_POST['Lemail'] ?? ''
 		));
 		if(CONFIG::g()->core_act_img) {
 			SmartyObject::getInstance()->assign('image', 'image');
@@ -142,8 +142,8 @@ class core {
 		    'image_control_desc'	=> LANG::getInstance()->i18n('_image_control_desc'),
 		    'return'				=> LANG::getInstance()->i18n('_return'),
 		    'forgot_button'			=> LANG::getInstance()->i18n('_forgot_button'),
-		    'post_id'				=> @$_POST['Luser'],
-		    'post_email'			=> @$_POST['Lemail']
+		    'post_id'				=> $_POST['Luser'] ?? '',
+		    'post_email'			=> $_POST['Lemail'] ?? ''
 		));
 		if(CONFIG::g()->core_act_img) {
 			SmartyObject::getInstance()->assign('image', 'images');
@@ -153,7 +153,7 @@ class core {
 
 	public function forgot_pwd() {
 
-		if(ACCOUNT::load()->forgot_pwd($_POST['Luser'], $_POST['Lemail'], @$_POST['Limage'])) {
+		if(ACCOUNT::load()->forgot_pwd($_POST['Luser'], $_POST['Lemail'], $_POST['Limage'] ?? null)) {
 			MSG::add_valid(LANG::getInstance()->i18n('_password_request'));
 			$this->index();
 		}else{
@@ -511,6 +511,296 @@ class core {
 		return;
 	}
 	
+	// ====================================================================
+	// Server Statistics Page
+	// ====================================================================
+	public function server_stats() {
+
+		$stats = array(
+			'total_accounts' => 0,
+			'online_players' => 0,
+			'total_characters' => 0,
+			'total_clans' => 0
+		);
+
+		// Total accounts
+		try {
+			$val = Database::fetchValue("SELECT COUNT(`login`) FROM `accounts`");
+			$stats['total_accounts'] = (int)($val ?? 0);
+		} catch (Exception $e) {
+			$stats['total_accounts'] = 0;
+		}
+
+		// Get game server stats
+		$class_stats = array();
+		$race_stats = array();
+
+		$game_servers = $this->get_configured_game_servers();
+		foreach ($game_servers as $gsId) {
+			try {
+				// Online players
+				$val = Database::fetchValue(
+					"SELECT COUNT(`charId`) FROM `characters` WHERE `online` = 1",
+					[], $gsId
+				);
+				$stats['online_players'] += (int)($val ?? 0);
+
+				// Total characters
+				$val = Database::fetchValue(
+					"SELECT COUNT(`charId`) FROM `characters`",
+					[], $gsId
+				);
+				$stats['total_characters'] += (int)($val ?? 0);
+
+				// Total clans
+				$val = Database::fetchValue(
+					"SELECT COUNT(`clan_id`) FROM `clan_data`",
+					[], $gsId
+				);
+				$stats['total_clans'] += (int)($val ?? 0);
+
+				// Class distribution
+				$rows = Database::fetchAll(
+					"SELECT `base_class`, COUNT(*) as cnt FROM `characters` GROUP BY `base_class` ORDER BY cnt DESC LIMIT 15",
+					[], $gsId
+				);
+				foreach ($rows as $row) {
+					$className = $this->get_class_name((int)$row['base_class']);
+					if (isset($class_stats[$className])) {
+						$class_stats[$className] += (int)$row['cnt'];
+					} else {
+						$class_stats[$className] = (int)$row['cnt'];
+					}
+				}
+			} catch (Exception $e) {
+				// Game server might not be configured
+			}
+		}
+
+		// Convert class stats to template array with percentages
+		arsort($class_stats);
+		$total_chars = max(1, $stats['total_characters']);
+		$class_arr = array();
+		foreach ($class_stats as $name => $count) {
+			$class_arr[] = array(
+				'name' => $name,
+				'count' => $count,
+				'percent' => round(($count / $total_chars) * 100, 1)
+			);
+		}
+
+		SmartyObject::getInstance()->assign('vm', array(
+			'stat_accounts'				=> LANG::getInstance()->i18n('_stat_accounts'),
+			'stat_online'				=> LANG::getInstance()->i18n('_stat_online'),
+			'stat_characters'			=> LANG::getInstance()->i18n('_stat_characters'),
+			'stat_clans'				=> LANG::getInstance()->i18n('_stat_clans'),
+			'stat_class_distribution'	=> LANG::getInstance()->i18n('_stat_class_distribution'),
+			'stat_class_name'			=> LANG::getInstance()->i18n('_stat_class_name'),
+			'stat_count'				=> LANG::getInstance()->i18n('_stat_count'),
+			'stat_percent'				=> LANG::getInstance()->i18n('_stat_percent'),
+			'stat_race_distribution'	=> LANG::getInstance()->i18n('_stat_race_distribution'),
+			'return'					=> LANG::getInstance()->i18n('_return'),
+		));
+
+		SmartyObject::getInstance()->assign('stats', $stats);
+		SmartyObject::getInstance()->assign('class_stats', $class_arr);
+
+		SmartyObject::getInstance()->register_block('dynamic', 'smarty_block_dynamic', false);
+		SmartyObject::getInstance()->setTemplate('server_stats.tpl');
+	}
+
+	// ====================================================================
+	// Top Players Page
+	// ====================================================================
+	public function top_players() {
+
+		$players = array();
+		$pvp_players = array();
+
+		$game_servers = $this->get_configured_game_servers();
+		foreach ($game_servers as $gsId) {
+			try {
+				// Top by level
+				$rows = Database::fetchAll(
+					"SELECT c.`char_name`, c.`level`, c.`base_class`, c.`online`, c.`clanid`,
+					        COALESCE(cd.`clan_name`, '') as clan_name
+					 FROM `characters` c
+					 LEFT JOIN `clan_data` cd ON c.`clanid` = cd.`clan_id`
+					 WHERE c.`accesslevel` = 0
+					 ORDER BY c.`level` DESC, c.`exp` DESC
+					 LIMIT 25",
+					[], $gsId
+				);
+
+				$rank = count($players) + 1;
+				foreach ($rows as $row) {
+					$players[] = array(
+						'rank' => $rank++,
+						'char_name' => $row['char_name'],
+						'level' => $row['level'],
+						'class_name' => $this->get_class_name((int)$row['base_class']),
+						'online' => (int)$row['online'],
+						'clan_name' => $row['clan_name']
+					);
+				}
+
+				// Top PvP
+				$rows = Database::fetchAll(
+					"SELECT `char_name`, `pvpkills`, `pkkills`, `base_class`
+					 FROM `characters`
+					 WHERE `accesslevel` = 0 AND `pvpkills` > 0
+					 ORDER BY `pvpkills` DESC
+					 LIMIT 15",
+					[], $gsId
+				);
+
+				$rank = count($pvp_players) + 1;
+				foreach ($rows as $row) {
+					$pvp_players[] = array(
+						'rank' => $rank++,
+						'char_name' => $row['char_name'],
+						'pvpkills' => $row['pvpkills'],
+						'pkkills' => $row['pkkills'],
+						'class_name' => $this->get_class_name((int)$row['base_class'])
+					);
+				}
+			} catch (Exception $e) {
+				// skip if game server not available
+			}
+		}
+
+		SmartyObject::getInstance()->assign('vm', array(
+			'top_title'		=> LANG::getInstance()->i18n('_top_title'),
+			'top_desc'		=> LANG::getInstance()->i18n('_top_desc'),
+			'top_name'		=> LANG::getInstance()->i18n('_top_name'),
+			'top_level'		=> LANG::getInstance()->i18n('_top_level'),
+			'top_class'		=> LANG::getInstance()->i18n('_top_class'),
+			'top_clan'		=> LANG::getInstance()->i18n('_top_clan'),
+			'top_status'	=> LANG::getInstance()->i18n('_top_status'),
+			'top_pvp_title'	=> LANG::getInstance()->i18n('_top_pvp_title'),
+			'return'		=> LANG::getInstance()->i18n('_return'),
+		));
+
+		SmartyObject::getInstance()->assign('players', $players);
+		if (!empty($pvp_players)) {
+			SmartyObject::getInstance()->assign('pvp_players', $pvp_players);
+		}
+
+		SmartyObject::getInstance()->register_block('dynamic', 'smarty_block_dynamic', false);
+		SmartyObject::getInstance()->setTemplate('top_players.tpl');
+	}
+
+	// ====================================================================
+	// World Map Page
+	// ====================================================================
+	public function world_map() {
+
+		$towns = array(
+			array('name' => 'Talking Island',    'x' => -84176,  'y' => 243382,  'z' => -3126),
+			array('name' => 'Elven Village',     'x' => 45525,   'y' => 48376,   'z' => -3059),
+			array('name' => 'Dark Elf Village',  'x' => 12181,   'y' => 16675,   'z' => -4580),
+			array('name' => 'Orc Village',       'x' => -45232,  'y' => -113603, 'z' => -224),
+			array('name' => 'Dwarven Village',   'x' => 115074,  'y' => -178115, 'z' => -880),
+			array('name' => 'Gludio',            'x' => -14138,  'y' => 122042,  'z' => -2988),
+			array('name' => 'Gludin',            'x' => -82856,  'y' => 150901,  'z' => -3128),
+			array('name' => 'Dion',              'x' => 18823,   'y' => 145048,  'z' => -3126),
+			array('name' => 'Giran',             'x' => 81236,   'y' => 148638,  'z' => -3469),
+			array('name' => 'Oren',              'x' => 80853,   'y' => 54653,   'z' => -1524),
+			array('name' => 'Aden',              'x' => 147391,  'y' => 25967,   'z' => -2012),
+			array('name' => 'Hunters Village',   'x' => 117163,  'y' => 76511,   'z' => -2712),
+			array('name' => 'Heine',             'x' => 111381,  'y' => 219064,  'z' => -3543),
+			array('name' => 'Rune',              'x' => 43894,   'y' => -48330,  'z' => -797),
+			array('name' => 'Goddard',           'x' => 148558,  'y' => -56030,  'z' => -2781),
+			array('name' => 'Schuttgart',        'x' => 87331,   'y' => -142842, 'z' => -1317),
+			array('name' => 'Floran Village',    'x' => 18823,   'y' => 145048,  'z' => -3126),
+			array('name' => 'Primeval Isle',     'x' => 10468,   'y' => -24569,  'z' => -3645),
+			array('name' => 'Kamael Village',    'x' => -118092, 'y' => 46955,   'z' => 360),
+		);
+
+		SmartyObject::getInstance()->assign('vm', array(
+			'map_title'				=> LANG::getInstance()->i18n('_map_title'),
+			'map_desc'				=> LANG::getInstance()->i18n('_map_desc'),
+			'map_players'			=> LANG::getInstance()->i18n('_map_players'),
+			'map_legend'			=> LANG::getInstance()->i18n('_map_legend'),
+			'map_legend_town'		=> LANG::getInstance()->i18n('_map_legend_town'),
+			'map_legend_location'	=> LANG::getInstance()->i18n('_map_legend_location'),
+			'return'				=> LANG::getInstance()->i18n('_return'),
+		));
+
+		SmartyObject::getInstance()->assign('towns', $towns);
+
+		SmartyObject::getInstance()->register_block('dynamic', 'smarty_block_dynamic', false);
+		SmartyObject::getInstance()->setTemplate('world_map.tpl');
+	}
+
+	// ====================================================================
+	// Helper: Get configured game server IDs
+	// ====================================================================
+	private function get_configured_game_servers() {
+		$ids = array();
+		try {
+			$rows = Database::fetchAll("SELECT `server_id` FROM `gameservers`");
+			foreach ($rows as $row) {
+				$gs = CONFIG::g()->select_game_server($row['server_id']);
+				if (!empty($gs)) {
+					$ids[] = (int)$row['server_id'];
+				}
+			}
+		} catch (Exception $e) {
+			// if no gameservers table, return empty
+		}
+		return $ids;
+	}
+
+	// ====================================================================
+	// Helper: Get L2 class name by base_class ID (High Five)
+	// ====================================================================
+	private function get_class_name($classId) {
+		$classes = array(
+			0 => 'Human Fighter', 1 => 'Warrior', 2 => 'Gladiator', 3 => 'Warlord',
+			4 => 'Human Knight', 5 => 'Paladin', 6 => 'Dark Avenger',
+			7 => 'Rogue', 8 => 'Treasure Hunter', 9 => 'Hawkeye',
+			10 => 'Human Mystic', 11 => 'Human Wizard', 12 => 'Sorceror', 13 => 'Necromancer',
+			14 => 'Warlock', 15 => 'Cleric', 16 => 'Bishop', 17 => 'Prophet',
+			18 => 'Elven Fighter', 19 => 'Elven Knight', 20 => 'Temple Knight',
+			21 => 'Swordsinger', 22 => 'Elven Scout', 23 => 'Plains Walker',
+			24 => 'Silver Ranger', 25 => 'Elven Mystic', 26 => 'Elven Wizard',
+			27 => 'Spellsinger', 28 => 'Elemental Summoner', 29 => 'Elven Oracle',
+			30 => 'Elven Elder', 31 => 'Dark Fighter', 32 => 'Palus Knight',
+			33 => 'Shillien Knight', 34 => 'Bladedancer', 35 => 'Assassin',
+			36 => 'Abyss Walker', 37 => 'Phantom Ranger', 38 => 'Dark Mystic',
+			39 => 'Dark Wizard', 40 => 'Spellhowler', 41 => 'Phantom Summoner',
+			42 => 'Shillien Oracle', 43 => 'Shillien Elder',
+			44 => 'Orc Fighter', 45 => 'Orc Raider', 46 => 'Destroyer',
+			47 => 'Orc Monk', 48 => 'Tyrant', 49 => 'Orc Mystic',
+			50 => 'Orc Shaman', 51 => 'Overlord', 52 => 'Warcryer',
+			53 => 'Dwarven Fighter', 54 => 'Scavenger', 55 => 'Bounty Hunter',
+			56 => 'Artisan', 57 => 'Warsmith',
+			88 => 'Duelist', 89 => 'Dreadnought', 90 => 'Phoenix Knight',
+			91 => 'Hell Knight', 92 => 'Sagittarius', 93 => 'Adventurer',
+			94 => 'Archmage', 95 => 'Soultaker', 96 => 'Arcana Lord',
+			97 => 'Cardinal', 98 => 'Hierophant',
+			99 => 'Eva Templar', 100 => 'Sword Muse', 101 => 'Wind Rider',
+			102 => 'Moonlight Sentinel', 103 => 'Mystic Muse',
+			104 => 'Elemental Master', 105 => 'Eva Saint',
+			106 => 'Shillien Templar', 107 => 'Spectral Dancer',
+			108 => 'Ghost Hunter', 109 => 'Ghost Sentinel',
+			110 => 'Storm Screamer', 111 => 'Spectral Master',
+			112 => 'Shillien Saint',
+			113 => 'Titan', 114 => 'Grand Khavatari', 115 => 'Dominator',
+			116 => 'Doomcryer', 117 => 'Fortune Seeker', 118 => 'Maestro',
+			123 => 'Male Soldier', 124 => 'Female Soldier',
+			125 => 'Trooper', 126 => 'Warder',
+			127 => 'Berserker', 128 => 'Male Soulbreaker',
+			129 => 'Female Soulbreaker', 130 => 'Arbalester',
+			131 => 'Doombringer', 132 => 'Male Soulhound',
+			133 => 'Female Soulhound', 134 => 'Trickster',
+			135 => 'Inspector', 136 => 'Judicator',
+		);
+
+		return $classes[$classId] ?? 'Unknown ('.$classId.')';
+	}
+
 	private function allow_char_mod() {
 		CONFIG::g()->cb('service_name', false);
 	
@@ -535,44 +825,46 @@ class core {
 
 	private function secure_post() {
 
-		if (!$_POST) return;
+		if (empty($_POST)) return;
 
 		foreach($_POST as $key => $value) {
-			if ($key == 'Luser')
+			$value = (string)($value ?? '');
+
+			if ($key === 'Luser')
 				$_POST[$key] = substr($value, 0, CONFIG::g()->core_id_limit);
 
-			if ($key == 'Lpwd')
+			if ($key === 'Lpwd')
 				$_POST[$key] = substr($value, 0, CONFIG::g()->core_pwd_limit);
 
-			if ($key == 'Lpwd2')
+			if ($key === 'Lpwd2')
 				$_POST[$key] = substr($value, 0, CONFIG::g()->core_pwd_limit);
 
-			if ($key == 'Lpwdold')
+			if ($key === 'Lpwdold')
 				$_POST[$key] = substr($value, 0, CONFIG::g()->core_pwd_limit);
 
-			if ($key == 'Lemail')
+			if ($key === 'Lemail')
 				$_POST[$key] = substr($value, 0, CONFIG::g()->core_email_limit);
 
-			if ($key == 'Lemail2')
+			if ($key === 'Lemail2')
 				$_POST[$key] = substr($value, 0, CONFIG::g()->core_email_limit);
 
-			if ($key == 'Limage')
+			if ($key === 'Limage')
 				$_POST[$key] = substr($value, 0, 5);
 
-			if ($key == 'key')
+			if ($key === 'key')
 				$_GET[$key] = substr($value, 0, 10);
 
-			if (!($key == 'wid' && is_int($value)))
+			if (!($key === 'wid' && is_numeric($value)))
 				$_GET[$key] = NULL;
 
-			if (!($key == 'cid' && is_int($value)))
+			if (!($key === 'cid' && is_numeric($value)))
 				$_GET[$key] = NULL;
-				
+
 		}
 
-		$_POST = array_map('htmlentities', $_POST);
-		$_POST = array_map('htmlspecialchars', $_POST);
-		
+		$_POST = array_map(function($v) { return htmlentities((string)($v ?? ''), ENT_QUOTES, 'UTF-8'); }, $_POST);
+		$_POST = array_map(function($v) { return htmlspecialchars((string)($v ?? ''), ENT_QUOTES, 'UTF-8'); }, $_POST);
+
 		return;
 	}
 

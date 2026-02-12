@@ -164,4 +164,59 @@ $vm['_cookie_prob']						= 'You will need to activate the cookies in your web br
 
 $vm['_allow_with_karma']				= 'Account services are avaible only for non-karmed player.';
 
+/*
+-----------------------------------------------------------------
+------------------------ Navigation -----------------------------
+-----------------------------------------------------------------
+*/
+
+$vm['_nav_home']						= 'Home';
+$vm['_nav_stats']						= 'Statistics';
+$vm['_nav_top']							= 'Top Players';
+$vm['_nav_map']							= 'World Map';
+
+/*
+-----------------------------------------------------------------
+--------------------- Server Statistics -------------------------
+-----------------------------------------------------------------
+*/
+
+$vm['_stat_accounts']					= 'Accounts';
+$vm['_stat_online']						= 'Online';
+$vm['_stat_characters']					= 'Characters';
+$vm['_stat_clans']						= 'Clans';
+$vm['_stat_class_distribution']			= 'Class Distribution';
+$vm['_stat_class_name']					= 'Class';
+$vm['_stat_count']						= 'Count';
+$vm['_stat_percent']					= 'Percentage';
+$vm['_stat_race_distribution']			= 'Race Distribution';
+
+/*
+-----------------------------------------------------------------
+----------------------- Top Players -----------------------------
+-----------------------------------------------------------------
+*/
+
+$vm['_top_title']						= 'Top Players';
+$vm['_top_desc']						= 'Best players on the server by level and PvP.';
+$vm['_top_name']						= 'Name';
+$vm['_top_level']						= 'Level';
+$vm['_top_class']						= 'Class';
+$vm['_top_clan']						= 'Clan';
+$vm['_top_status']						= 'Status';
+$vm['_top_pvp_title']					= 'Top PvP Players';
+
+/*
+-----------------------------------------------------------------
+------------------------ World Map ------------------------------
+-----------------------------------------------------------------
+*/
+
+$vm['_map_title']						= 'World Map';
+$vm['_map_desc']						= 'Towns and locations of Lineage II High Five world.';
+$vm['_map_players']						= 'players';
+$vm['_map_legend']						= 'Legend';
+$vm['_map_legend_town']					= 'Town with players';
+$vm['_map_legend_location']				= 'Location';
+
 ?>

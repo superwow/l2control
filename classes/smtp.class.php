@@ -18,68 +18,60 @@ defined( '_ACM_VALID' ) or die( 'Direct Access to this location is not allowed.'
 class SMTP {
 
     // Nom du domaine ou nom du serveur
-    var $NomDuDomaine = '';
+    public $NomDuDomaine = '';
 
     // De Qui
-    var $From = 'root@localhost';// Adresse de l' expéditeur
-    var $FromName = 'Root';// Nom de l' expéditeur
-    var $ReplyTo = 'root@localhost';// Adresse de retour
+    public $From = 'root@localhost';
+    public $FromName = 'Root';
+    public $ReplyTo = 'root@localhost';
 
     // A Qui
-    var $To = '';
-    // Utilisation : $Bcc = 'mail1,mail2,....';
-    var $Bcc = '';// Blind Carbon Copy, c'est à dire que les adresses qui sont contenue ici seront invisibles pour tout le monde
-    var $Cc = '';
+    public $To = '';
+    public $Bcc = '';
+    public $Cc = '';
 
     // Priorité
-    var $Priority = 3;// Priorité accordée au mail (valeur allant de 1 pour Urgent à 3 pour normal et 6 pour bas)
+    public $Priority = 3;
 
     // Encodage
-    var $ContentType = 'html';//Contenu du mail (texte, html...) (txt , html, txt/html)
-    var $Encoding = '8bit'; // Ancienne valeur quoted-printable
-    var $ISO = 'iso-8859-15';
-    var $MIME = '1.0';// La version mime
+    public $ContentType = 'html';
+    public $Encoding = '8bit';
+    public $ISO = 'iso-8859-15';
+    public $MIME = '1.0';
 
     // Confirmation de reception
-    var $Confimation_reception = '';// Entrez l' adresse où sera renvoyé la confirmation
+    public $Confimation_reception = '';
 
     // Le mail
-    var $Sujet = '';
-    var $Body = '';
-    var $Body_txt = '';
+    public $Sujet = '';
+    public $Body = '';
+    public $Body_txt = '';
 
     // Fichier(s) joint(s)
-    var $File_joint = array();
+    public $File_joint = array();
 
     // Nombre tour
-    var $Tour = 0;
+    public $Tour = 0;
 
-
-    //**************************************************************************
     // Paramètre de connection SMTP
-    //**************************************************************************
-    var $Authentification_smtp = false;
+    public $Authentification_smtp = false;
+    public $serveur = '';
+    public $port = 25;
+    public $login_smtp = '';
+    public $mdp_smtp = '';
+    public $time_out = 10;
 
-    var $serveur = '';// Serveur SMTP
-    var $port = 25;// Port SMTP
-    var $login_smtp = '';// Login pour le serveur SMTP
-    var $mdp_smtp = '';// Mot de passe pour le serveur SMTP
-    var $time_out = 10;// Durée de la connection avec le serveur SMTP
-
-
-    //**************************************************************************
     // Variables temporaires
-    //**************************************************************************
-    var $smtp_connection = '';// Variable de connection
-    var $erreur = '';
-    var $debug = false;
+    public $smtp_connection = '';
+    public $erreur = '';
+    public $debug = false;
 
 //------------------------------------------------------------------------------
 
     //**************************************************************************
     // Fonction de déclaration de connection SMTP
     //**************************************************************************
-    function SMTP($serveur='', $user='', $pass='', $port=25, $NomDuDomaine='', $debug=false){
+    function __construct($serveur='', $user='', $pass='', $port=25, $NomDuDomaine='', $debug=false){
         if($serveur){
             $this->serveur = $serveur;
         }
@@ -123,7 +115,7 @@ class SMTP {
         // On règle le timeout du serveur SMTP car parfois, le serveur SMTP peut être un peut lent à répondre
         // Windows ne comprend pas la fonction socket_set_timeout donc on vérifi que l' on travail sous Linux
         if(substr(PHP_OS, 0, 3) !== 'WIN'){
-           socket_set_timeout($this->smtp_connection, $this->time_out, 0);
+           stream_set_timeout($this->smtp_connection, $this->time_out, 0);
         }
 
         //**********************************************************************
@@ -243,9 +235,9 @@ class SMTP {
     //**************************************************************************
     function headers(){
 		// Id unique
-		$Boundary1 = '------------Boundary-00=_'.substr(md5(uniqid(time())), 0, 7).'0000000000000';
-		$Boundary2 = '------------Boundary-00=_'.substr(md5(uniqid(time())), 0, 7).'0000000000000';
-		$Boundary3 = '------------Boundary-00=_'.substr(md5(uniqid(time())), 0, 7).'0000000000000';
+		$Boundary1 = '------------Boundary-00=_'.substr(md5(uniqid((string)time(), true)), 0, 7).'0000000000000';
+		$Boundary2 = '------------Boundary-00=_'.substr(md5(uniqid((string)time(), true)), 0, 7).'0000000000000';
+		$Boundary3 = '------------Boundary-00=_'.substr(md5(uniqid((string)time(), true)), 0, 7).'0000000000000';
 
         $header = '';
         $No_body = 0;

@@ -42,7 +42,7 @@ class mysql {
 
 	
 	private function connect () {
-		$this->db_inst = mysqli_connect($this->_host, $this->_user, $this->_pass);
+		$this->db_inst = mysqli_connect($this->_host, $this->_user, (string)($this->_pass ?? ''));
 		if(!$this->db_inst) {
 			MSG::add_error(LANG::getInstance()->i18n('_error_db_connect'));
 			return false;
@@ -114,7 +114,7 @@ class mysql {
 	}
 	
 	public function escape_string($q) {
-		return mysqli_real_escape_string( $this->db_inst, $q);
+		return mysqli_real_escape_string( $this->db_inst, (string)($q ?? ''));
 	}
 
 	public function __destruct () {

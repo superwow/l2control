@@ -44,6 +44,13 @@ SmartyObject::getInstance()->assign('vm_title_page', LANG::getInstance()->i18n('
 
 SmartyObject::getInstance()->assign('vm_charset_type', CONFIG::g()->core_iso_type);
 
+// Navigation labels for l2moon theme
+SmartyObject::getInstance()->assign('vm_nav_home', LANG::getInstance()->i18n('_nav_home'));
+SmartyObject::getInstance()->assign('vm_nav_stats', LANG::getInstance()->i18n('_nav_stats'));
+SmartyObject::getInstance()->assign('vm_nav_top', LANG::getInstance()->i18n('_nav_top'));
+SmartyObject::getInstance()->assign('vm_nav_map', LANG::getInstance()->i18n('_nav_map'));
+SmartyObject::getInstance()->assign('session_url', (SID != '') ? '&'.SID : '');
+
 $core = new CORE();
 
 if(method_exists($core, $action))

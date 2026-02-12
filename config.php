@@ -61,7 +61,7 @@ CONFIG::g()->cs('core_language', 'russian');									// language use by the Acco
 
 CONFIG::g()->cb('core_ack_cond', true);										// User must accept before register ; conditions can be edited on the language file
 
-CONFIG::g()->cs('core_template', 'kamael');										// template directory
+CONFIG::g()->cs('core_template', 'l2moon');										// template directory (l2moon, kamael, black, blue, gracia, pro)
 
 CONFIG::g()->cb('core_interlude', false);										// If you are using interlude database set to true
 

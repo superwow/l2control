@@ -5,7 +5,18 @@ defined( '_ACM_VALID' ) or die( 'Direct Access to this location is not allowed.'
 class email{
 
 	private $email;
-	
+	private $email_smtp_use;
+	private $email_smtp_address;
+	private $email_smtp_port;
+	private $email_smtp_login;
+	private $email_smtp_password;
+	private $email_smtp_domain;
+	private $email_from;
+	private $server_name;
+	private $login;
+	private $code;
+	private $url;
+
 	private static $instance;
 
 	private function __construct() {

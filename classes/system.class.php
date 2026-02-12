@@ -215,6 +215,7 @@ class lang {
 	private $path = './language/';
 	private $item = null;
 	private $defItem = null;
+	private $newFile = null;
 	
 	private static $instance;
 
