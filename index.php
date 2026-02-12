@@ -22,6 +22,8 @@ header("Content-Type: text/html; charset=".CONFIG::g()->core_iso_type);
 if(file_exists('./install.php'))
 	echo('<div style="font-size: 20px; background-color: #FFF; color:#000;"><strong><center><br />Warning: The install file can be see. Please delete install.php before start ACM on your live server.<br /><br /></center></strong></div>');
 
+SmartyObject::getInstance()->assign('session_id', '');
+
 if(SID != '') {
 	SmartyObject::getInstance()->assign('session_id', '?'.SID);
 	DEBUG::add(LANG::getInstance()->i18n('_cookie_prob'));

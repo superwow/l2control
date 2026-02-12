@@ -29,7 +29,7 @@ class account{
 		return self::$instance;
 	}
 
-	public function load() {
+	public static function load() {
 		if(empty($_SESSION['acm']))			// Check if user is logged
 			return ACCOUNT::singleton();
 
