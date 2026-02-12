@@ -11,6 +11,7 @@ function smarty_block_dynamic($param, $content, $template = null, &$repeat = fal
 class SmartyObject extends Smarty {
 	
 	private static $instance;
+	private $template = null;
 
 	public function __construct(){
 		parent::__construct();
@@ -41,8 +42,8 @@ class SmartyObject extends Smarty {
 	}
 	
 	public function display($template = null, $cache_id = null, $compile_id = null, $parent = null) {
-		DEBUG::publish($this);
-		MSG::display($this);
+		DEBUG::singleton()->publish($this);
+		MSG::singleton()->display($this);
 		if ($template === null) {
 			$template = $this->template;
 		}
