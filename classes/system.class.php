@@ -4,7 +4,7 @@ defined( '_ACM_VALID' ) or die( 'Direct Access to this location is not allowed.'
 
 
 	
-function smarty_block_dynamic($param, $content, &$smarty) {
+function smarty_block_dynamic($param, $content, $template = null, &$repeat = false) {
 	return $content;
 }
 
@@ -13,11 +13,11 @@ class SmartyObject extends Smarty {
 	private static $instance;
 
 	public function __construct(){
-		$this->template_dir = 'templates/'.CONFIG::g()->core_template;
-		$this->compile_dir = 'cache';
-		$this->caching = false;
-		$this->force_compile = true;
 		parent::__construct();
+		$this->setTemplateDir('templates/' . CONFIG::g()->core_template);
+		$this->setCompileDir('cache');
+		$this->setCaching(Smarty::CACHING_OFF);
+		$this->force_compile = true;
 	}
 	
 	public function __clone() {
@@ -36,17 +36,17 @@ class SmartyObject extends Smarty {
 		$this->template = $template;
 	}
 	
-	public function assign($tpl_var, $value = null) {
-		parent::assign($tpl_var, $value);
+	public function assign($tpl_var, $value = null, $nocache = false, $scope = null) {
+		parent::assign($tpl_var, $value, $nocache, $scope);
 	}
 	
-	public function display($resource_name = null, $cache_id = null, $compile_id = null) {
+	public function display($resource_name = null, $cache_id = null, $compile_id = null, $parent = null) {
 		DEBUG::publish($this);
 		MSG::display($this);
 		if ($resource_name === null) {
 			$resource_name = $this->template;
 		}
-		parent::display($resource_name, $cache_id, $compile_id);
+		parent::display($resource_name, $cache_id, $compile_id, $parent);
 	}
 }
 
