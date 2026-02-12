@@ -45,6 +45,10 @@ body {
   min-height: 100vh;
 }
 
+.text-muted {
+  color: var(--moon-text-dim) !important;
+}
+
 a {
   color: var(--moon-accent);
   text-decoration: none;
