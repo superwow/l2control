@@ -11,7 +11,7 @@ function smarty_block_dynamic($param, $content, $template = null, &$repeat = fal
 class SmartyObject extends Smarty {
 	
 	private static $instance;
-	private $template = null;
+	private $selectedTemplate = null;
 
 	public function __construct(){
 		parent::__construct();
@@ -34,7 +34,7 @@ class SmartyObject extends Smarty {
 	}
 	
 	public function setTemplate($template) {
-		$this->template = $template;
+		$this->selectedTemplate = $template;
 	}
 	
 	public function assign($tpl_var, $value = null, $nocache = false, $scope = null) {
@@ -42,10 +42,10 @@ class SmartyObject extends Smarty {
 	}
 	
 	public function display($template = null, $cache_id = null, $compile_id = null, $parent = null) {
-		DEBUG::singleton()->publish($this);
+		DEBUG::publish($this);
 		MSG::singleton()->display($this);
 		if ($template === null) {
-			$template = $this->template;
+			$template = $this->selectedTemplate;
 		}
 		parent::display($template, $cache_id, $compile_id, $parent);
 	}
@@ -132,7 +132,7 @@ class debug {
 		$d->debug_text .= $txt.'<br />'."\n\r";
 	}
 
-	public function publish($t) {
+	public static function publish($t) {
 		if(!DEBUG)
 			return false;
 		
